@@ -1,1 +1,9 @@
-# csc-307-group-project
+# ChoreCore
+
+## A To-Do List App
+
+### Contributers:
+- Rory Smail
+- Edgar Robles
+- Hoikin Lam
+- Connor Villanueva
