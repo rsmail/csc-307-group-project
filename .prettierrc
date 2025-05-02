@@ -6,4 +6,4 @@ bracketSpacing: true
 htmlWhitespaceSensitivity: ignore
 proseWrap: always
 printWidth: 64
-tabWidth: 4
+tabWidth: 4g
