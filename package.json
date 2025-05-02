@@ -4,7 +4,9 @@
   "description": "## A To-Do List App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run dev -w react-frontend",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "repository": {
     "type": "git",
@@ -16,7 +18,10 @@
     "url": "https://github.com/rsmail/csc-307-group-project/issues"
   },
   "homepage": "https://github.com/rsmail/csc-307-group-project#readme",
-  "workspaces" : [
+  "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
 }
