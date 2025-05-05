@@ -1,2 +1,7 @@
-After cloning the repository do npm install on the root directory, express-backend, and frontend 
-Also make sure .prettierrc is in YAML
+# Setup
+
+- Clone the repository
+
+- In the root directory, `run npm install`
+    
+    - Make sure the language mode for `.prettierrc` is `YAML`
