@@ -1,7 +1,7 @@
 // backend.js
 import express from "express";
-import {createClient} from "@supabase/supabase-js"
-import dotenv from "dotenv"
+import { createClient } from "@supabase/supabase-js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -12,7 +12,6 @@ const supabase = createClient(SUPABASE_URI, ANON_KEY);
 
 const app = express();
 const port = 8000;
-
 
 app.use(express.json());
 
@@ -26,12 +25,14 @@ app.listen(port, () => {
     );
 });
 
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
     // .select() defaults to select *
-    const {data, error} = await supabase.from('users').select();
+    const { data, error } = await supabase
+        .from("users")
+        .select();
 
     if (error) {
-        return res.status(500).json({error: error.message});
+        return res.status(500).json({ error: error.message });
     }
 
     res.json(data);
