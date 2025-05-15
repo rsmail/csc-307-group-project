@@ -28,9 +28,7 @@ app.listen(port, () => {
 
 app.get("/users", async (req, res) => {
     // .select() defaults to select *
-    const { data, error } = await db
-        .from("users")
-        .select();
+    const { data, error } = await db.from("users").select();
 
     if (error) {
         return res.status(500).json({ error: error.message });

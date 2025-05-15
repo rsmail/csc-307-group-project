@@ -17,7 +17,8 @@
           API Settings -> Project API Keys
 
 - To connect to start a connection with the database use:
-    - You may use any name you want instead of `db`. Be sure to include the correct path to `db.js`
+    - You may use any name you want instead of `db`. Be sure to
+      include the correct path to `db.js`
 
 ```
 import { db } from "./db.js"
