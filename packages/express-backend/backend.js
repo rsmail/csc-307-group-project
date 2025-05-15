@@ -1,14 +1,15 @@
 // backend.js
 import express from "express";
-import { createClient } from "@supabase/supabase-js";
-import dotenv from "dotenv";
+// import { createClient } from "@supabase/supabase-js";
+// import dotenv from "dotenv";
+import db from "./db.js";
 
-dotenv.config();
+// dotenv.config();
 
-const SUPABASE_URI = process.env.SUPABASE_URI;
-const ANON_KEY = process.env.ANON_KEY;
+// const SUPABASE_URI = process.env.SUPABASE_URI;
+// const ANON_KEY = process.env.ANON_KEY;
 
-const supabase = createClient(SUPABASE_URI, ANON_KEY);
+// const supabase = createClient(SUPABASE_URI, ANON_KEY);
 
 const app = express();
 const port = 8000;
@@ -27,7 +28,7 @@ app.listen(port, () => {
 
 app.get("/users", async (req, res) => {
     // .select() defaults to select *
-    const { data, error } = await supabase
+    const { data, error } = await db
         .from("users")
         .select();
 

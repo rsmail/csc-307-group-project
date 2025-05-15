@@ -17,21 +17,16 @@
           API Settings -> Project API Keys
 
 - To connect to start a connection with the database use:
+    - You may use any name you want instead of `db`. Be sure to include the correct path to `db.js`
 
 ```
-import dotenv from "dotenv"
-
-dotenv.config();
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const ANON_KEY = process.env.ANON_KEY;
-
-const supabase = createClient(SUPABASE_URL, ANON_KEY)
+import { db } from "./db.js"
 ```
 
 - Note, every endpoint must use async/await. See example:
 
 ```
 app.get('/users', async (req, res) => {
-   const {data, error} = await supabase.from('users').select('*');
+   const {data, error} = await db.from('users').select('*');
 });
 ```
