@@ -11,5 +11,9 @@
 
 ### Sequence Diagrams
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/59556df0-bf12-4477-9219-0e6f9d70c38d" alt="Image" width="600"/>
+  <img src="https://github.com/user-attachments/assets/59556df0-bf12-4477-9219-0e6f9d70c38d" alt="Image" width="300"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ed1f5cfd-eb04-4eb4-bfe6-6edffd379cc2" alt="Image" width="300"/>
 </p>
