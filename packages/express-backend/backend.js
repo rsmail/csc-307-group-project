@@ -2,20 +2,10 @@
 // note: npx nodemon backend.js (node backend.js for default)
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import { registerUser } from "./auth.js";
-import { loginUser } from "./auth.js";
-import { authenticateUser } from "./auth.js";
-
-dotenv.config();
-// connect early - takes time + asynchronous
-const { MONGO_CONNECTION_STRING } = process.env;
-
-mongoose.set("debug", true);
-mongoose
-    .connect(MONGO_CONNECTION_STRING + "users") // connect to Db "users"
-    .catch((error) => console.log(error));
+import db from "./db.js";
+import { registerUser } from "./services/auth.js";
+import { loginUser } from "./services/auth.js";
+import { authenticateUser } from "./services/auth.js";
 
 const app = express();
 const port = 8000;
@@ -43,7 +33,10 @@ app.post("/login", loginUser);
 
 app.post("/users", authenticateUser, (req, res) => {
     const userToAdd = req.body;
-    Users.addUser(userToAdd).then((result) =>
-        res.status(201).send(result)
-    );
+    console.log(`User To Add ${JSON.stringify(userToAdd)}`);
+    // Users.addUser(userToAdd).then((result) =>
+    //     res.status(201).send(result)
+    // );
+
+    const { error } = db.from("users").insert(userToAdd);
 });

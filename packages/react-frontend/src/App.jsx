@@ -148,6 +148,7 @@ function MyApp() {
     }, []);
 
     function postUser(person) {
+        console.log(JSON.stringify(person));
         const promise = fetch(`${API_PREFIX}/users`, {
             method: "POST",
             headers: {
