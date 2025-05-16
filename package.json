@@ -1,22 +1,27 @@
 {
-  "name": "csc-307-group-project",
-  "version": "1.0.0",
-  "description": "## A To-Do List App",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rsmail/csc-307-group-project.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rsmail/csc-307-group-project/issues"
-  },
-  "homepage": "https://github.com/rsmail/csc-307-group-project#readme",
-  "workspaces" : [
-    "packages/*"
-  ]
+    "name": "csc-307-group-project",
+    "version": "1.0.0",
+    "description": "## A To-Do List App",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "npm run dev -w react-frontend",
+        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rsmail/csc-307-group-project.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rsmail/csc-307-group-project/issues"
+    },
+    "homepage": "https://github.com/rsmail/csc-307-group-project#readme",
+    "workspaces": [
+        "packages/*"
+    ],
+    "devDependencies": {
+        "prettier": "^3.5.3"
+    }
 }
