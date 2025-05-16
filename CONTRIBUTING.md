@@ -21,7 +21,7 @@
       include the correct path to `db.js`
 
 ```
-import { db } from "./db.js"
+import db from "./db.js"
 ```
 
 - Note, every endpoint must use async/await. See example:

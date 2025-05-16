@@ -1,23 +1,20 @@
 // backend.js
+// note: npx nodemon backend.js (node backend.js for default)
 import express from "express";
-// import { createClient } from "@supabase/supabase-js";
-// import dotenv from "dotenv";
+import cors from "cors";
 import db from "./db.js";
-
-// dotenv.config();
-
-// const SUPABASE_URI = process.env.SUPABASE_URI;
-// const ANON_KEY = process.env.ANON_KEY;
-
-// const supabase = createClient(SUPABASE_URI, ANON_KEY);
+import { registerUser } from "./services/auth.js";
+import { loginUser } from "./services/auth.js";
+import { authenticateUser } from "./services/auth.js";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send(`Hello World`);
+    res.send("Hello World!");
 });
 
 app.listen(port, () => {
@@ -26,13 +23,20 @@ app.listen(port, () => {
     );
 });
 
-app.get("/users", async (req, res) => {
-    // .select() defaults to select *
-    const { data, error } = await db.from("users").select();
+app.get("/users", authenticateUser, (req, res) => {
+    const name = req.query.name;
+});
 
-    if (error) {
-        return res.status(500).json({ error: error.message });
-    }
+app.post("/signup", registerUser);
 
-    res.json(data);
+app.post("/login", loginUser);
+
+app.post("/users", authenticateUser, (req, res) => {
+    const userToAdd = req.body;
+    console.log(`User To Add ${JSON.stringify(userToAdd)}`);
+    // Users.addUser(userToAdd).then((result) =>
+    //     res.status(201).send(result)
+    // );
+
+    const { error } = db.from("users").insert(userToAdd);
 });
