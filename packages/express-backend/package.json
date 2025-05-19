@@ -1,10 +1,7 @@
 {
     "name": "express-backend",
     "version": "1.0.0",
-<<<<<<< HEAD
-=======
     "type": "module",
->>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52
     "main": "backend.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -15,9 +12,6 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-<<<<<<< HEAD
-        "express": "^5.1.0"
-=======
         "@supabase/supabase-js": "^2.49.4",
         "bcrypt": "^6.0.0",
         "cors": "^2.8.5",
@@ -25,7 +19,6 @@
         "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
         "whatwg-url": "^14.2.0"
->>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52
     },
     "devDependencies": {
         "@eslint/compat": "^1.2.9",

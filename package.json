@@ -1,3 +1,4 @@
+
 {
     "name": "csc-307-group-project",
     "version": "1.0.0",
@@ -23,11 +24,8 @@
     ],
     "devDependencies": {
         "prettier": "^3.5.3"
-<<<<<<< HEAD
-=======
     },
     "dependencies": {
         "react-router-dom": "^7.6.0"
->>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52
     }
 }
