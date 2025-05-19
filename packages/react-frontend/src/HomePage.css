@@ -1,0 +1,35 @@
+.homepage {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: #333;
+}
+
+.header {
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.hero {
+  padding: 60px 20px;
+  background-color: #e0f7fa;
+}
+
+.hero button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.footer {
+  background-color: #f4f4f4;
+  padding: 15px;
+  margin-top: 40px;
+}
