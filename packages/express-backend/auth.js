@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const creds = [];
 
 export function registerUser(req, res) {
-    const { username, pwd } = req.body; 
+    const { username, pwd } = req.body;
 
     if (!username || !pwd) {
         res.status(400).send("Bad request: Invalid input data");
@@ -17,8 +17,8 @@ export function registerUser(req, res) {
             .then((hashedPassword) => {
                 generateAccessToken(username).then((token) => {
                     console.log("Token:", token);
-                    res.status(201).send({ token: token});
-                    creds.push({username, hashedPassword});
+                    res.status(201).send({ token: token });
+                    creds.push({ username, hashedPassword });
                 });
             });
     }
@@ -27,7 +27,7 @@ export function registerUser(req, res) {
 function generateAccessToken(username) {
     return new Promise((resolve, reject) => {
         jwt.sign(
-            { username: username},
+            { username: username },
             process.env.TOKEN_SECRET,
             { expiresIn: "1d" },
             (error, token) => {
@@ -50,7 +50,7 @@ export function authenticateUser(req, res, next) {
         res.status(401).end();
     } else {
         jwt.verify(
-            token, 
+            token,
             process.env.TOKEN_SECRET,
             (error, decoded) => {
                 if (decoded) {
@@ -65,29 +65,33 @@ export function authenticateUser(req, res, next) {
 }
 
 export function loginUser(req, res) {
-  const { username, pwd } = req.body; // from form
-  const retrievedUser = creds.find(
-    (c) => c.username === username
-  );
+    const { username, pwd } = req.body; // from form
+    const retrievedUser = creds.find(
+        (c) => c.username === username
+    );
 
-  if (!retrievedUser) {
-    // invalid username
-    res.status(401).send("Unauthorized");
-  } else {
-    bcrypt
-      .compare(pwd, retrievedUser.hashedPassword)
-      .then((matched) => {
-        if (matched) {
-          generateAccessToken(username).then((token) => {
-            res.status(200).send({ token: token });
-          });
-        } else {
-          // invalid password
-          res.status(401).send("Unauthorized");
-        }
-      })
-      .catch(() => {
+    if (!retrievedUser) {
+        // invalid username
         res.status(401).send("Unauthorized");
-      });
-  }
+    } else {
+        bcrypt
+            .compare(pwd, retrievedUser.hashedPassword)
+            .then((matched) => {
+                if (matched) {
+                    generateAccessToken(username).then(
+                        (token) => {
+                            res.status(200).send({
+                                token: token
+                            });
+                        }
+                    );
+                } else {
+                    // invalid password
+                    res.status(401).send("Unauthorized");
+                }
+            })
+            .catch(() => {
+                res.status(401).send("Unauthorized");
+            });
+    }
 }

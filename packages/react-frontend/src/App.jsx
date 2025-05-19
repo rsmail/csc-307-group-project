@@ -26,14 +26,20 @@ function MyApp() {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    response
-                        .json()
-                        .then((payload) =>
-                            setToken(payload.token)
+                    response.json().then((payload) => {
+                        localStorage.setItem(
+                            "username",
+                            creds.username
                         );
-                    setMessage(
-                        `Login successful; auth token saved`
-                    );
+                        localStorage.setItem(
+                            `token:${creds.username}`,
+                            payload.token
+                        );
+                        setToken(payload.token);
+                        setMessage(
+                            `Login successful; auth token saved`
+                        );
+                    });
                 } else {
                     setMessage(
                         `Login Error ${response.status}: ${response.data}`
@@ -57,14 +63,20 @@ function MyApp() {
         })
             .then((response) => {
                 if (response.status === 201) {
-                    response
-                        .json()
-                        .then((payload) =>
-                            setToken(payload.token)
+                    response.json().then((payload) => {
+                        localStorage.setItem(
+                            "username",
+                            creds.username
                         );
-                    setMessage(
-                        `Signup successful for user: ${creds.username}; auth token saved`
-                    );
+                        localStorage.setItem(
+                            `token:${creds.username}`,
+                            payload.token
+                        );
+                        setToken(payload.token);
+                        setMessage(
+                            `Signup successful for user: ${creds.username}; auth token saved`
+                        );
+                    });
                 } else {
                     setMessage(
                         `Signup Error ${response.status}: ${response.data}`
@@ -131,6 +143,14 @@ function MyApp() {
     }
 
     useEffect(() => {
+        // issue: way to clear the login and signups and remove tokens
+        const token = localStorage.getItem("token");
+        const username = localStorage.getItem("username");
+        if (token && username) {
+            setToken(token);
+            setMessage(`Welcome back, ${username}`);
+        }
+
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
