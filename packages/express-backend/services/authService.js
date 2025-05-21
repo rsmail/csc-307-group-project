@@ -1,7 +1,7 @@
 // services/authService.js
 
-import db from "../db.js";
-import { generateToken, verifyToken } from "../utils/jwt.js";
+import db from "../utils/db.js";
+import { generateToken, verifyToken, getUserId } from "../utils/jwt.js";
 import bcrypt from "bcrypt";
 
 /**
@@ -13,10 +13,10 @@ import bcrypt from "bcrypt";
 async function loginUser({ email, password }) {
     const { data, error } = await db
         .from("users")
-        .select("password, token")
+        .select("id, password")
         .match({email: email});
     
-    if (error | data.length === 0) {
+    if (error || data.length === 0) {
         throw new Error(error);
     }
 
@@ -24,12 +24,9 @@ async function loginUser({ email, password }) {
 
     // Check that password matches
     if (await bcrypt.compare(password, user.password)) {
-        let token = user.token;
+        // Generate a new token for the user
+        const token = await generateToken(user.id);
 
-        // Check if token is still valid
-        if (!verifyToken(user.token)) {
-            token = generateToken(email);
-        }
         return token;
     }
     throw new Error("Unable to process request");
@@ -43,20 +40,23 @@ async function loginUser({ email, password }) {
  */
 async function registerUser({ email, password }) {
     const hashedPwd = await bcrypt.hash(password, 10);
-    const token = await generateToken(email);
 
-    // Add user to the database
-    const { error } = await db
+    // Add user to the database and retrieve their userId
+    const { data, error } = await db
         .from("users")
         .insert({
             email: email,
             password: hashedPwd,
-            token: token
-        });
+        })
+        .select();
     
     if (error) {
+        console.log(error);
         throw new Error(error)
     }
+    const user = data[0];
+    const token = await generateToken(user.id);
+
     return token;
 }
 
