@@ -4,6 +4,7 @@ import express  from "express";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
+import groupRoutes from "./routes/groupRoutes.js";
 
 const router = express();
 const port = 8000;
@@ -12,6 +13,7 @@ router.use(cors());
 router.use(express.json());
 
 router.use('/', authRoutes);
+router.use('/', groupRoutes);
 
 router.get("/", (req, res) => {
     res.send("Hello World!");
