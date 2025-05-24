@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import db from "../db.js";
 const creds = [];
 
 export function registerUser(req, res) {
@@ -15,10 +15,39 @@ export function registerUser(req, res) {
             .genSalt(10)
             .then((salt) => bcrypt.hash(pwd, salt))
             .then((hashedPassword) => {
-                generateAccessToken(username).then((token) => {
-                    console.log("Token:", token);
-                    res.status(201).send({ token: token });
-                    creds.push({ username, hashedPassword });
+                return generateAccessToken(username).then(
+                    (jwttoken) => {
+                        // console.log("Token:", token);
+                        // res.status(201).send({ token: jwttoken});
+                        creds.push({
+                            username,
+                            hashedPassword
+                        });
+
+                        return {
+                            username,
+                            hashedPassword,
+                            jwttoken
+                        };
+                    }
+                );
+            })
+            .then(async (cred) => {
+                console.log(cred);
+                const { error } = await db
+                    .from("users")
+                    .insert({
+                        email: cred.username,
+                        password: cred.hashedPassword,
+                        token: cred.jwttoken
+                    });
+
+                if (error) {
+                    console.log(error);
+                }
+                res.status(201).send({
+                    email: cred.username,
+                    token: cred.jwttoken
                 });
             });
     }
