@@ -1,7 +1,11 @@
 // services/authService.js
 
 import db from "../utils/db.js";
-import { generateToken, verifyToken, getUserId } from "../utils/jwt.js";
+import {
+    generateToken,
+    verifyToken,
+    getUserId
+} from "../utils/jwt.js";
 import bcrypt from "bcrypt";
 
 /**
@@ -14,8 +18,8 @@ async function loginUser({ email, password }) {
     const { data, error } = await db
         .from("users")
         .select("id, password")
-        .match({email: email});
-    
+        .match({ email: email });
+
     if (error || data.length === 0) {
         throw new Error(error);
     }
@@ -38,7 +42,12 @@ async function loginUser({ email, password }) {
  * @param {*} password
  * @returns A token on success, -1 on failure
  */
-async function registerUser({ email, password }) {
+async function registerUser({
+    email,
+    password,
+    firstname,
+    lastname
+}) {
     const hashedPwd = await bcrypt.hash(password, 10);
 
     // Add user to the database and retrieve their userId
@@ -47,12 +56,14 @@ async function registerUser({ email, password }) {
         .insert({
             email: email,
             password: hashedPwd,
+            firstname: firstname || null,
+            lastname: lastname || null
         })
         .select();
-    
+
     if (error) {
         console.log(error);
-        throw new Error(error)
+        throw new Error(error);
     }
     const user = data[0];
     const token = await generateToken(user.id);
@@ -62,7 +73,7 @@ async function registerUser({ email, password }) {
 
 /**
  * Verifies authentication of a user based on their token
- * @param {*} token 
+ * @param {*} token
  */
 async function authenticateUser(token) {
     return verifyToken(token);

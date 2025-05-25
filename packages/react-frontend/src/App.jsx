@@ -22,7 +22,10 @@ function MyApp() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(creds)
+            body: JSON.stringify({
+                email: creds.email,
+                password: creds.password
+            })
         })
             .then((response) => {
                 if (response.status === 200) {
@@ -54,7 +57,7 @@ function MyApp() {
             body: JSON.stringify(creds)
         })
             .then((response) => {
-                if (response.status === 201) {
+                if (response.ok) {
                     response.json().then((payload) => {
                         setToken(payload.token);
                         setMessage(
