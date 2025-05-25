@@ -27,14 +27,6 @@ function MyApp() {
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((payload) => {
-                        localStorage.setItem(
-                            "email",
-                            creds.email
-                        );
-                        localStorage.setItem(
-                            `token:${creds.email}`,
-                            payload.token
-                        );
                         setToken(payload.token);
                         setMessage(
                             `Login successful; auth token saved`
@@ -64,14 +56,6 @@ function MyApp() {
             .then((response) => {
                 if (response.status === 201) {
                     response.json().then((payload) => {
-                        localStorage.setItem(
-                            "email",
-                            creds.email
-                        );
-                        localStorage.setItem(
-                            `token:${creds.email}`,
-                            payload.token
-                        );
                         setToken(payload.token);
                         setMessage(
                             `Signup successful for user: ${creds.email}; auth token saved`
@@ -143,13 +127,7 @@ function MyApp() {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        const email = localStorage.getItem("email");
-        if (token && email) {
-            setToken(token);
-            setMessage(`Welcome back, ${email}`);
-        }
-
+        setToken(INVALID_TOKEN);
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
@@ -199,9 +177,6 @@ function MyApp() {
                                     removeCharacter={
                                         removeOneCharacter
                                     }
-                                />
-                                <Form
-                                    handleSubmit={updateList}
                                 />
                             </>
                         }
