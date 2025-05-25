@@ -2,18 +2,18 @@ import React, { useState } from "react";
 
 function Login(props) {
     const [creds, setCreds] = useState({
-        username: "",
-        pwd: ""
+        email: "",
+        password: ""
     });
 
     return (
         <form>
-            <label htmlFor="username">UserName</label>
+            <label htmlFor="email">Email</label>
             <input
                 type="text"
-                name="username"
-                id="username"
-                value={creds.username}
+                name="email"
+                id="email"
+                value={creds.email}
                 onChange={handleChange}
             />
             <label htmlFor="password">Password</label>
@@ -21,7 +21,7 @@ function Login(props) {
                 type="password"
                 name="password"
                 id="password"
-                value={creds.pwd}
+                value={creds.password}
                 onChange={handleChange}
             />
             <input
@@ -35,18 +35,18 @@ function Login(props) {
     function handleChange(event) {
         const { name, value } = event.target;
         switch (name) {
-            case "username":
-                setCreds({ ...creds, username: value });
+            case "email":
+                setCreds({ ...creds, email: value });
                 break;
             case "password":
-                setCreds({ ...creds, pwd: value });
+                setCreds({ ...creds, password: value });
                 break;
         }
     }
 
     function submitForm() {
         props.handleSubmit(creds);
-        setCreds({ username: "", pwd: "" });
+        setCreds({ email: "", password: "" });
     }
 }
 export default Login;

@@ -28,11 +28,11 @@ function MyApp() {
                 if (response.status === 200) {
                     response.json().then((payload) => {
                         localStorage.setItem(
-                            "username",
-                            creds.username
+                            "email",
+                            creds.email
                         );
                         localStorage.setItem(
-                            `token:${creds.username}`,
+                            `token:${creds.email}`,
                             payload.token
                         );
                         setToken(payload.token);
@@ -54,7 +54,7 @@ function MyApp() {
     }
 
     function signupUser(creds) {
-        const promise = fetch(`${API_PREFIX}/signup`, {
+        const promise = fetch(`${API_PREFIX}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -65,16 +65,16 @@ function MyApp() {
                 if (response.status === 201) {
                     response.json().then((payload) => {
                         localStorage.setItem(
-                            "username",
-                            creds.username
+                            "email",
+                            creds.email
                         );
                         localStorage.setItem(
-                            `token:${creds.username}`,
+                            `token:${creds.email}`,
                             payload.token
                         );
                         setToken(payload.token);
                         setMessage(
-                            `Signup successful for user: ${creds.username}; auth token saved`
+                            `Signup successful for user: ${creds.email}; auth token saved`
                         );
                     });
                 } else {
@@ -143,12 +143,11 @@ function MyApp() {
     }
 
     useEffect(() => {
-        // issue: way to clear the login and signups and remove tokens
         const token = localStorage.getItem("token");
-        const username = localStorage.getItem("username");
-        if (token && username) {
+        const email = localStorage.getItem("email");
+        if (token && email) {
             setToken(token);
-            setMessage(`Welcome back, ${username}`);
+            setMessage(`Welcome back, ${email}`);
         }
 
         fetchUsers()
