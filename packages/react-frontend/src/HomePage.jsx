@@ -1,36 +1,34 @@
 import React from 'react';
-import './HomePage.css';
+import './Homepage.css';
 
-const HomePage = () => {
+const groups = ['Group A', 'Group B', 'Group C', 'Group D', 'Group E'];
+const tasks = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
+
+const ScrollableList = ({ title, items }) => (
+  <div className="list-container">
+    <h2 className="list-title">{title}</h2>
+    <div className="scroll-wrapper">
+      <div className="scroll-gradient left" />
+      <div className="scroll-gradient right" />
+      <div className="scroll-content">
+        {items.map((item, index) => (
+          <div key={index} className="scroll-item">
+            {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const Homepage = () => {
   return (
     <div className="homepage">
-      {/* Header */}
-      <header className="header">
-        <h1>Chore Core</h1>
-        <nav>
-          <ul className="nav-links">
-            <li>Group 1</li>
-            <li>Group 2</li>
-            <li>Group 3</li>
-          </ul>
-        </nav>
-      </header>
-
-      {/* Hero Section */}
-      <main className="hero">
-        <h2>Welcome to the Homepage</h2>
-        <button>Learn More</button>
-        
-      </main>
-
-      {/* Footer */}
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} My Simple Website</p>
-      </footer>
+      <h1 className="homepage-title">Welcome to the Homepage</h1>
+      <ScrollableList title="Groups" items={groups} />
+      <ScrollableList title="Tasks" items={tasks} />
     </div>
-
-    
   );
 };
-export default HomePage;
 
+export default Homepage;

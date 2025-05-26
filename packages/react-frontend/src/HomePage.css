@@ -1,35 +1,83 @@
-.homepage {
+/* Homepage.css */
+
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #f0f8ff);
+}
+
+.homepage {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.homepage-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1a237e;
   text-align: center;
+  margin-bottom: 60px;
+}
+
+.list-container {
+  margin-bottom: 60px;
+}
+
+.list-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 20px;
   color: #333;
 }
 
-.header {
-  background-color: #f4f4f4;
-  padding: 20px;
+.scroll-wrapper {
+  position: relative;
+  overflow-x: auto;
+  padding: 10px 0;
 }
 
-.nav-links {
-  list-style: none;
-  padding: 0;
+.scroll-content {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  gap: 24px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f7f9fc;
+  border: 1px solid #ddd;
 }
 
-.hero {
-  padding: 60px 20px;
-  background-color: #e0f7fa;
+.scroll-item {
+  min-width: 200px;
+  padding: 24px;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-radius: 16px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0d47a1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
 
-.hero button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 20px;
+.scroll-item:hover {
+  transform: scale(1.05);
 }
 
-.footer {
-  background-color: #f4f4f4;
-  padding: 15px;
-  margin-top: 40px;
+.scroll-gradient {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scroll-gradient.left {
+  left: 0;
+  background: linear-gradient(to right, #f7f9fc, transparent);
+}
+
+.scroll-gradient.right {
+  right: 0;
+  background: linear-gradient(to left, #f7f9fc, transparent);
 }
