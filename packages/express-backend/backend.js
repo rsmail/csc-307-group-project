@@ -23,6 +23,7 @@ import { authenticateUser } from "./services/auth.js";
 //     );
 // });
 
+
 // app.get("/users", authenticateUser, (req, res) => {
 //     const name = req.query.name;
 // });
