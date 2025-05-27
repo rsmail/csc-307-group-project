@@ -21,6 +21,9 @@ app.listen(port, () => {
     console.log(
         `Example app listening at http://localhost:${port}`
     );
+<<<<<<< HEAD
+});
+=======
 });
 
 app.get("/users", authenticateUser, (req, res) => {
@@ -40,3 +43,4 @@ app.post("/users", authenticateUser, (req, res) => {
 
     const { error } = db.from("users").insert(userToAdd);
 });
+>>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52

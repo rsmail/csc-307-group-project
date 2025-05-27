@@ -1,8 +1,16 @@
+<<<<<<< HEAD
+# Setup
+=======
 # General Repo Setup
+>>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52
 
 - Clone the repository
 
 - In the root directory, `run npm install`
+<<<<<<< HEAD
+    
+    - Make sure the language mode for `.prettierrc` is `YAML`
+=======
     - Make sure the language mode for `.prettierrc` is `YAML`
 
 ## Backend Setup
@@ -31,3 +39,4 @@ app.get('/users', async (req, res) => {
    const {data, error} = await db.from('users').select('*');
 });
 ```
+>>>>>>> d2c281ffee75549e5d101345ad7f66db53a47d52
