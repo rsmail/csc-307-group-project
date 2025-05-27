@@ -4,6 +4,7 @@ import Form from "./Form";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
+import Homepage from "./Homepage"; 
 import {
     BrowserRouter,
     Routes,
@@ -172,19 +173,19 @@ function App() {
                 </nav>
                 <p>{message}</p>
 
-                <Routes>
+                /*<Routes>
+                    <Route
+                        path="/table"
+                        element={
+                            <Table
+                                characters={characters}
+                                removeOneCharacter={removeOneCharacter}
+                            />
+                        }
+                    />*/
                     <Route
                         path="/"
-                        element={
-                            <>
-                                <Table
-                                    characterData={characters}
-                                    removeCharacter={
-                                        removeOneCharacter
-                                    }
-                                />
-                            </>
-                        }
+                        element={<Homepage />}
                     />
                     <Route
                         path="/login"
@@ -210,5 +211,5 @@ function App() {
         </BrowserRouter>
     );
 }
-export default App;
 
+export default App;
