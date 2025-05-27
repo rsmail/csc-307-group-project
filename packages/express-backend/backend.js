@@ -7,29 +7,29 @@ import { registerUser } from "./services/auth.js";
 import { loginUser } from "./services/auth.js";
 import { authenticateUser } from "./services/auth.js";
 
-const app = express();
-const port = 8000;
+// const app = express();
+// const port = 8000;
 
-app.use(cors());
-app.use(express.json());
+// app.use(cors());
+// app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
+// app.get("/", (req, res) => {
+//     res.send("Hello World!");
+// });
 
-app.listen(port, () => {
-    console.log(
-        `Example app listening at http://localhost:${port}`
-    );
-});
+// app.listen(port, () => {
+//     console.log(
+//         `Example app listening at http://localhost:${port}`
+//     );
+// });
 
-app.get("/users", authenticateUser, (req, res) => {
-    const name = req.query.name;
-});
+// app.get("/users", authenticateUser, (req, res) => {
+//     const name = req.query.name;
+// });
 
-app.post("/signup", registerUser);
+// app.post("/signup", registerUser);
 
-app.post("/login", loginUser);
+// app.post("/login", loginUser);
 
 app.post("/users", authenticateUser, (req, res) => {
     const userToAdd = req.body;

@@ -1,11 +1,11 @@
-import './Login.css';
+import './SignUp.css';
 import React, { useState } from "react";
 
-function Login(props) {
-    const [creds, setCreds] = useState({
-        username: "",
-        pwd: ""
-    });
+function SignUp(props) {
+  const [creds, setCreds] = useState({
+    username: "",
+    pwd: "",
+  });
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -25,8 +25,8 @@ function Login(props) {
     <div className="login-container">
       <div className="login-box">
         <h1 className="login-title">Chore Core</h1>
-        <h2 className="login-subtitle">Sign in</h2>
-        <p className="login-subtext">Enter your email and password to sign in</p>
+        <h2 className="login-subtitle">Create and account</h2>
+        <p className="login-subtext">Enter your email to sign up for this app</p>
 
         <form className="login-form" onSubmit={submitForm}>
           <input
@@ -36,21 +36,13 @@ function Login(props) {
             value={creds.username}
             onChange={handleChange}
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            value={creds.pwd}
-            onChange={handleChange}
-          />
+          
           <button type="submit">Continue</button>
-          <button type="button" onClick={() => window.location.href = "/signup"}>
-            Create an account
-          </button>
+          
         </form>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default SignUp;
