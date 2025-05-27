@@ -24,18 +24,19 @@ function App() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(creds)
+            body: JSON.stringify({
+                email: creds.email,
+                password: creds.password
+            })
         })
             .then((response) => {
                 if (response.status === 200) {
-                    response
-                        .json()
-                        .then((payload) =>
-                            setToken(payload.token)
+                    response.json().then((payload) => {
+                        setToken(payload.token);
+                        setMessage(
+                            `Login successful; auth token saved`
                         );
-                    setMessage(
-                        `Login successful; auth token saved`
-                    );
+                    });
                 } else {
                     setMessage(
                         `Login Error ${response.status}: ${response.data}`
@@ -50,7 +51,7 @@ function App() {
     }
 
     function signupUser(creds) {
-        const promise = fetch(`${API_PREFIX}/signup`, {
+        const promise = fetch(`${API_PREFIX}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -58,15 +59,13 @@ function App() {
             body: JSON.stringify(creds)
         })
             .then((response) => {
-                if (response.status === 201) {
-                    response
-                        .json()
-                        .then((payload) =>
-                            setToken(payload.token)
+                if (response.ok) {
+                    response.json().then((payload) => {
+                        setToken(payload.token);
+                        setMessage(
+                            `Signup successful for user: ${creds.email}; auth token saved`
                         );
-                    setMessage(
-                        `Signup successful for user: ${creds.username}; auth token saved`
-                    );
+                    });
                 } else {
                     setMessage(
                         `Signup Error ${response.status}: ${response.data}`
@@ -133,6 +132,7 @@ function App() {
     }
 
     useEffect(() => {
+        setToken(INVALID_TOKEN);
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
@@ -182,9 +182,6 @@ function App() {
                                     removeCharacter={
                                         removeOneCharacter
                                     }
-                                />
-                                <Form
-                                    handleSubmit={updateList}
                                 />
                             </>
                         }

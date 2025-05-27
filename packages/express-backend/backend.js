@@ -1,43 +1,28 @@
 // backend.js
 // note: npx nodemon backend.js (node backend.js for default)
-import express from "express";
+import express  from "express";
 import cors from "cors";
-import db from "./db.js";
-import { registerUser } from "./services/auth.js";
-import { loginUser } from "./services/auth.js";
-import { authenticateUser } from "./services/auth.js";
 
-// const app = express();
-// const port = 8000;
+import authRoutes from "./routes/authRoutes.js";
+import groupRoutes from "./routes/groupRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
-// app.use(cors());
-// app.use(express.json());
+const router = express();
+const port = 8000;
 
-// app.get("/", (req, res) => {
-//     res.send("Hello World!");
-// });
+router.use(cors());
+router.use(express.json());
 
-// app.listen(port, () => {
-//     console.log(
-//         `Example app listening at http://localhost:${port}`
-//     );
-// });
+router.use('/', authRoutes);
+router.use('/', groupRoutes);
+router.use("/users", userRoutes);
 
+router.get("/", (req, res) => {
+    res.send("Hello World!");
+});
 
-// app.get("/users", authenticateUser, (req, res) => {
-//     const name = req.query.name;
-// });
-
-// app.post("/signup", registerUser);
-
-// app.post("/login", loginUser);
-
-app.post("/users", authenticateUser, (req, res) => {
-    const userToAdd = req.body;
-    console.log(`User To Add ${JSON.stringify(userToAdd)}`);
-    // Users.addUser(userToAdd).then((result) =>
-    //     res.status(201).send(result)
-    // );
-
-    const { error } = db.from("users").insert(userToAdd);
+router.listen(port, () => {
+    console.log(
+        `Example app listening at http://localhost:${port}`
+    );
 });
