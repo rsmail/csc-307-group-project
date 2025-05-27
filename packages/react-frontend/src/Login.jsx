@@ -4,10 +4,12 @@ function Login(props) {
     const [creds, setCreds] = useState({
         email: "",
         password: "",
+        confirmpassword: "",
         firstname: "",
         lastname: ""
     });
 
+    const [error, msg] = useState("");
     const isSignup = props.buttonLabel === "Sign Up";
 
     return (
@@ -30,6 +32,14 @@ function Login(props) {
             />
             {isSignup && (
                 <>
+                    <label htmlFor="confirmpassword">Confirm Password</label>
+                    <input
+                        type="password"
+                        name="confirmpassword"
+                        id="confirmpassword"
+                        value={creds.confirmpassword}
+                        onChange={handleChange}
+                    />
                     <label htmlFor="firstname">
                         {" "}
                         First Name
@@ -51,6 +61,7 @@ function Login(props) {
                     />
                 </>
             )}
+            {error && <p>{error}</p>}
             <input
                 type="button"
                 value={props.buttonLabel || "Log In"}
@@ -68,6 +79,9 @@ function Login(props) {
             case "password":
                 setCreds({ ...creds, password: value });
                 break;
+            case "confirmpassword":
+                setCreds({...creds, confirmpassword: value});
+                break;
             case "firstname":
                 setCreds({ ...creds, firstname: value });
                 break;
@@ -78,6 +92,12 @@ function Login(props) {
     }
 
     function submitForm() {
+        msg("");
+        if(isSignup && creds.password !== creds.confirmpassword){
+            msg("Passwords do not match");
+            return;
+        }
+
         props.handleSubmit(creds);
         setCreds({
             email: "",
