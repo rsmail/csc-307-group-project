@@ -1,0 +1,151 @@
+/* Homepage.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #f0f8ff);
+}
+
+.homepage {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.homepage-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1a237e;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.list-container {
+  margin-bottom: 60px;
+}
+
+.list-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.scroll-wrapper {
+  position: relative;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.scroll-content {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f7f9fc;
+  border: 1px solid #ddd;
+}
+
+.scroll-item {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-radius: 50%; /* Makes it a circle */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0d47a1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.scroll-item:hover {
+  transform: scale(1.05);
+}
+
+.scroll-gradient {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scroll-gradient.left {
+  left: 0;
+  background: linear-gradient(to right, #f7f9fc, transparent);
+}
+
+.scroll-gradient.right {
+  right: 0;
+  background: linear-gradient(to left, #f7f9fc, transparent);
+}
+
+
+.scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-wrapper {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;     
+}
+
+.vertical-scroll-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  border: 1px solid #ddd;
+  background-color: #fefefe;
+  border-radius: 10px;
+}
+
+.vertical-scroll-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.vertical-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
+
+.progress-item {
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.progress-group-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-bar-background {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.progress-label {
+  min-width: 40px;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #555;
+}
