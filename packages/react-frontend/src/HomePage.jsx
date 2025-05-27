@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Homepage.css';
 
 const groups = [
@@ -28,7 +29,10 @@ const ProgressBar = ({ completed, total }) => {
 
 const GroupList = ({ groups, onSelectGroup }) => (
   <div className="list-container">
-    <h2 className="list-title">Groups</h2>
+    <div className="list-header">
+      <h2 className="list-title">Groups</h2>
+      <Link to="/make-group" className="make-group-button">+ New Group</Link>
+    </div>
     <div className="scroll-wrapper">
       <div className="scroll-gradient left" />
       <div className="scroll-gradient right" />
