@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Homepage.css';
 
 const groups = [
@@ -18,7 +18,7 @@ const ProgressBar = ({ completed, total }) => {
       <div className="progress-bar-background">
         <div
           className="progress-bar-fill"
-          style={{ width: `${percent}%` }}
+          style={{ width: `${percent}%`, backgroundColor: percent === 100 ? '#4caf50' : '#2196f3' }}
         ></div>
       </div>
       <div className="progress-label">{percent}%</div>
@@ -26,7 +26,7 @@ const ProgressBar = ({ completed, total }) => {
   );
 };
 
-const GroupList = ({ groups }) => (
+const GroupList = ({ groups, onSelectGroup }) => (
   <div className="list-container">
     <h2 className="list-title">Groups</h2>
     <div className="scroll-wrapper">
@@ -34,7 +34,7 @@ const GroupList = ({ groups }) => (
       <div className="scroll-gradient right" />
       <div className="scroll-content">
         {groups.map((group, index) => (
-          <div key={index} className="scroll-item">
+          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group)}>
             <div>{group.name}</div>
           </div>
         ))}
@@ -74,13 +74,33 @@ const ScrollableList = ({ title, items }) => (
   </div>
 );
 
+const GroupDetails = ({ group, onBack }) => (
+  <div className="group-details">
+    <button className="back-button" onClick={onBack}>← Back to Homepage</button>
+    <h2 className="group-title">{group.name}</h2>
+    <ul className="task-list">
+      {Array.from({ length: group.totalTasks }).map((_, index) => (
+        <li key={index} className="task-item">Task {index + 1}</li>
+      ))}
+    </ul>
+  </div>
+);
+
 const Homepage = () => {
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
   return (
     <div className="homepage">
       <h1 className="homepage-title">Chore Core</h1>
-      <GroupList groups={groups} />
-      <ScrollableList title="Tasks" items={tasks} />
-      <ProgressList groups={groups} />
+      {!selectedGroup ? (
+        <>
+          <GroupList groups={groups} onSelectGroup={setSelectedGroup} />
+          <ScrollableList title="Tasks" items={tasks} />
+          <ProgressList groups={groups} />
+        </>
+      ) : (
+        <GroupDetails group={selectedGroup} onBack={() => setSelectedGroup(null)} />
+      )}
     </div>
   );
 };
