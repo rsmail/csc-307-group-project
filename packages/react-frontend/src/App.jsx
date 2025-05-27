@@ -182,7 +182,7 @@ function App() {
                                 removeOneCharacter={removeOneCharacter}
                             />
                         }
-                    />*
+                    />*/
                     <Route
                         path="/"
                         element={<Homepage />}
