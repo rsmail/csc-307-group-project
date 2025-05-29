@@ -8,10 +8,10 @@ import jwt from "jsonwebtoken"
  * @param {*} email 
  * @returns `JWTtoken`
  */
-function generateToken(userId) {
+function generateToken(user_id) {
     return new Promise((resolve, reject) => {
         jwt.sign(
-            { userId: userId},
+            { user_id: user_id},
             process.env.TOKEN_SECRET,
             { expiresIn: "1d" },
             (error, token) => {
@@ -30,7 +30,7 @@ function generateToken(userId) {
  * @param {*} token 
  * @returns `boolean`
  */
-function verifyToken(token) {
+async function verifyToken(token) {
     try {
         jwt.verify(token, process.env.TOKEN_SECRET);
         return true;
@@ -48,7 +48,7 @@ function verifyToken(token) {
  */
 function getUserId(token) {
     const payload = jwt.decode(token);
-    return payload.userId;
+    return payload.user_id;
 }
 
 export { generateToken, verifyToken, getUserId };

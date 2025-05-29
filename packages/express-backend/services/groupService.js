@@ -9,22 +9,21 @@ import db from "../utils/db.js";
  * @returns The groupId
  */
 export async function createGroup(groupName, ownerId) {
-    // Inserting new group
-    const { data, error } = db
+    // Inserting new group and returning group_id
+    const { data, error } = await db
         .from("groups")
         .insert({
             groupName : groupName,
             groupOwner : ownerId
         })
-        .select()
+        .select();
     
     if (error) {
-        console.log(error);
         throw new Error(error);
     }
 
     const group = data[0];
-    addOwnerToGroup(group.id, ownerId);
+    await addOwnerToGroup(group.id, ownerId);
 
     return group.id;
 }
@@ -35,16 +34,15 @@ export async function createGroup(groupName, ownerId) {
  * @param {*} ownerId 
  */
 export async function addOwnerToGroup(groupId, ownerId) {
-    const { error } = db
+    const { error } = await db
         .from("group_members")
         .insert({
-            userId: ownerId,
-            groupId: groupId,
+            user_id: ownerId,
+            group_id: groupId,
             status: "ACCEPTED"
         });
     
     if (error) {
-        console.log(error);
         throw new Error(error);
     }
 }
@@ -55,18 +53,19 @@ export async function addOwnerToGroup(groupId, ownerId) {
  * @param {*} userId
  */
 export async function inviteUserToGroup(groupId, userId) {
-    const { error } = db
+    const { error } = await db
         .from("group_members")
         .insert({
-            userId: userId,
-            groupId : groupId,
+            user_id: userId,
+            group_id : groupId,
             status : "PENDING"
         });
-    
+
         if (error) {
-            console.log(error);
             throw new Error(error);
         }
+    
+    return;
 }
 
 
@@ -76,21 +75,25 @@ export async function inviteUserToGroup(groupId, userId) {
  * @param {*} groupId 
  * @param {*} userId 
  */
-export async function addUserToGroup(groupId, userId) {
-    const { error } = db
+export async function acceptGroupInvite(groupId, userId) {
+    const { data, error } = await db
         .from("group_members")
         .update({
             status : "ACCEPTED"
         })
         .match({
-            userId: userId,
-            groupId: groupId,
+            user_id: userId,
+            group_id: groupId,
             status: "PENDING"
-        });
+        })
+        .select();
     
     if (error) {
-        console.log(error);
         throw new Error(error);
+    }
+
+    if (!data) {
+        throw new Error("User does not have a pending invite");
     }
 }
 
@@ -101,21 +104,36 @@ export async function addUserToGroup(groupId, userId) {
  * @param {*} userId 
  */
 export async function declineGroupInvite(groupId, userId) {
-    const { error } = db
+    const { error } = await db
         .from("group_members")
         .update({
             status: "DECLINED"
         })
         .match({
-            userId: userId,
-            groupId: groupId,
+            user_id: userId,
+            group_id: groupId,
             status: "PENDING"
         });
     
     if (error) {
-        console.log(error);
         throw new Error(error);
     }
+}
+
+
+export async function getUsersPendingInvites(userId) {
+    const { data, error } = await db
+        .from("group_members")
+        .select("group_id, groups(groupName)")
+        .match({
+            user_id: userId,
+            status: "PENDING"
+        });
+    
+    if (error) {
+        throw new Error(error);
+    }
+    return data[0];
 }
 
 /**
@@ -124,12 +142,12 @@ export async function declineGroupInvite(groupId, userId) {
  * @param {*} userId 
  */
 export async function removeUserFromGroup(groupId, userId) {
-    const { error } = db
+    const { error } = await db
         .from("group_members")
         .delete()
         .match({
-            userId: userId,
-            groupId: groupId,
+            user_id: userId,
+            group_id: groupId,
         });
 }
 
@@ -147,10 +165,47 @@ export async function getUserGroups(userId) {
         });
 
     if (error) {
-        console.log(error);
         throw new Error(error);
     }
 
-    return data
+    return data[0]
+}
+
+/**
+ * Fetches all users in a group
+ * @param {*} groupId 
+ * @returns A list of group members
+ */
+export async function getGroupMembers(groupId) {
+    const { data, error } = await db
+        .from("group_members")
+        .select("user_id")
+        .match({
+            group_id: groupId,
+            status: "ACCEPTED"
+        });
+
+    if (error) {
+        throw new Error(error);
+    }
+
+    return data[0];
+}
+
+export async function verifyUserInGroup(groupId, userId) {
+    const { data, error } = await db
+        .from("group_members")
+        .select()
+        .match({
+            user_id: userId,
+            group_id: groupId,
+            status: "ACCEPTED"
+        });
+    
+    if (error) {
+        throw new Error(error);
+    }
+
+    return !!data;
 }
 
