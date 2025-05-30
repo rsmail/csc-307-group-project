@@ -68,8 +68,6 @@ export async function inviteUserToGroup(groupId, userId) {
     return;
 }
 
-
-
 /**
  * Updates user from PENDING to ACCEPTED
  * @param {*} groupId 
@@ -97,13 +95,13 @@ export async function acceptGroupInvite(groupId, userId) {
     }
 }
 
-
 /**
  * Updates user status from PENDING to DECLINED
  * @param {*} groupId 
  * @param {*} userId 
  */
 export async function declineGroupInvite(groupId, userId) {
+    // Should we delete the entry instead? This would allow for reinvites
     const { error } = await db
         .from("group_members")
         .update({
@@ -120,7 +118,11 @@ export async function declineGroupInvite(groupId, userId) {
     }
 }
 
-
+/**
+ * Fetches a users pending invites
+ * @param {*} userId 
+ * @returns A list of {group_id, group_name}
+ */
 export async function getUsersPendingInvites(userId) {
     const { data, error } = await db
         .from("group_members")
@@ -133,7 +135,11 @@ export async function getUsersPendingInvites(userId) {
     if (error) {
         throw new Error(error);
     }
-    return data[0];
+
+    return data.map(item => ({
+        group_id: item.group_id,
+        group_name: item.groups.groupName
+    }));
 }
 
 /**
@@ -149,16 +155,21 @@ export async function removeUserFromGroup(groupId, userId) {
             user_id: userId,
             group_id: groupId,
         });
+    
+    if (error) {
+        throw new Error(error);
+    }
 }
 
 /**
- * Lists all groups a user is in
+ * Fetches all groups a user is in
  * @param {*} userId 
+ * @return A list of {group_id, group_name}
  */
 export async function getUserGroups(userId) {
     const { data, error } = await db
         .from("group_members")
-        .select("group_id")
+        .select("group_id, groups(groupName)")
         .match({
             user_id: userId,
             status: "ACCEPTED"
@@ -168,7 +179,10 @@ export async function getUserGroups(userId) {
         throw new Error(error);
     }
 
-    return data[0]
+    return data.map(item => ({
+        group_id: item.group_id,
+        group_name: item.groups.groupName
+    }));
 }
 
 /**
@@ -179,7 +193,7 @@ export async function getUserGroups(userId) {
 export async function getGroupMembers(groupId) {
     const { data, error } = await db
         .from("group_members")
-        .select("user_id")
+        .select("user_id, users(firstname, lastname)")
         .match({
             group_id: groupId,
             status: "ACCEPTED"
@@ -189,7 +203,11 @@ export async function getGroupMembers(groupId) {
         throw new Error(error);
     }
 
-    return data[0];
+    return data.map(item => ({
+        user_id: item.user_id,
+        firstname: item.users.firstname,
+        lastname: item.users.lastname
+    }));
 }
 
 export async function verifyUserInGroup(groupId, userId) {

@@ -5,7 +5,7 @@ import { getUserId } from "../utils/jwt.js"
 
 /**
  * Fetches the user's groups
- * @param {*} req Headers: {token}
+ * @param {*} req 
  * @param {*} res 
  * @returns A list of group_ids
  */
@@ -25,7 +25,7 @@ export async function getUserGroups(req, res) {
 
 /**
  * Creates a new group 
- * @param {*} req Headers: {token}
+ * @param {*} req Body: {group_name}
  * @param {*} res 
  * @returns Id of newly created group
  */
@@ -69,7 +69,11 @@ export async function sendGroupInvite(req, res) {
     }
 }
 
-
+/**
+ * Accepts a pending invite
+ * @param {*} req 
+ * @param {*} res 
+ */
 export async function acceptGroupInvite(req, res) {
     try {
         const token = req.headers.authorization;
@@ -86,9 +90,9 @@ export async function acceptGroupInvite(req, res) {
 
 /**
  * Fetches all members of a group
- * @param {*} req Param: group_id
+ * @param {*} req 
  * @param {*} res 
- * @returns A list of all members
+ * @returns A list of {user_id, firstname, lastname} on success
  */
 export async function getGroupMembers(req, res) {
     try {
@@ -97,7 +101,7 @@ export async function getGroupMembers(req, res) {
         const group_id = req.params.id;
 
         if (!(await groupService.verifyUserInGroup(group_id, group_member_id))) {
-            return res.status(401).send("User Not In Group");
+            return res.status(401).send("User not in group");
         }
 
         const members = await groupService.getGroupMembers(group_id);
@@ -108,6 +112,12 @@ export async function getGroupMembers(req, res) {
     }
 }
 
+/**
+ * Fetches a users pending invites
+ * @param {*} req 
+ * @param {*} res 
+ * @returns A list of {group_id, group_name} on success
+ */
 export async function getPendingInvites(req, res) {
     try {
         const token = req.headers.authorization;
@@ -119,4 +129,27 @@ export async function getPendingInvites(req, res) {
         console.log(error);
         res.status(500).send(error);
     }
+}
+
+/**
+ * Removes a user from a group
+ * @param {*} req 
+ * @param {*} res 
+ */
+export async function removeGroupMember(req, res) {
+     try {
+        const token = req.headers.authorization;
+        const user_id = getUserId(token);
+        const group_id = req.params.id;
+
+        if (!(await groupService.verifyUserInGroup(group_id, user_id)));
+
+        const user_id_to_delete = req.body.user_id;
+
+        await groupService.removeUserFromGroup(group_id, user_id_to_delete);
+        return res.status(204).send("User successfully removed");
+     } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+     }
 }
