@@ -142,7 +142,9 @@ export async function removeGroupMember(req, res) {
         const user_id = getUserId(token);
         const group_id = req.params.id;
 
-        if (!(await groupService.verifyUserInGroup(group_id, user_id)));
+        if (!(await groupService.verifyUserInGroup(group_id, user_id))) {
+            return res.status(401).send("User not in group");
+        }
 
         const user_id_to_delete = req.body.user_id;
 
