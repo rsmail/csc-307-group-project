@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "## A To-Do List App",
     "main": "index.js",
-    "scripts": {     
+    "scripts": {
         "lint": "npx eslint . && npx prettier --check .",
         "test": "npx jest",
         "dev": "nodemon backend_with_db.js",

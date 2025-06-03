@@ -1,0 +1,39 @@
+name: Azure Node.js App Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --workspaces=false
+        working-directory: packages/express-backend
+
+      - name: Build
+        run: npm run build --if-present
+        working-directory: packages/express-backend
+
+      - name: Zip artifact for deployment
+        run: zip ../../release.zip ./* -r
+        working-directory: packages/express-backend
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: chorecore-api
+          slot-name: production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: release.zip
