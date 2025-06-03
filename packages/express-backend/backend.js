@@ -8,7 +8,6 @@ import groupRoutes from "./routes/groupRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const router = express();
-const port = 8000;
 
 router.use(cors());
 router.use(express.json());
@@ -21,8 +20,8 @@ router.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-router.listen(port, () => {
-    console.log(
-        `Example app listening at http://localhost:${port}`
-    );
+const port = 8000;
+
+router.listen(process.env.PORT || port, () => {
+    console.log("REST API is listening.");
 });

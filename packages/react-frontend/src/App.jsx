@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import Form from "./Form";
 import Login from "./Login";
+import SignUp from "./SignUp";
+import MakeGroup from "./MakeGroup";
+import Homepage from "./Homepage"; 
 import {
     BrowserRouter,
     Routes,
@@ -9,7 +12,7 @@ import {
     Link
 } from "react-router-dom";
 
-function MyApp() {
+function App() {
     const [characters, setCharacters] = useState([]);
     const INVALID_TOKEN = "INVALID_TOKEN";
     const [token, setToken] = useState(INVALID_TOKEN);
@@ -170,19 +173,19 @@ function MyApp() {
                 </nav>
                 <p>{message}</p>
 
-                <Routes>
+                /*<Routes>
+                    <Route
+                        path="/table"
+                        element={
+                            <Table
+                                characters={characters}
+                                removeOneCharacter={removeOneCharacter}
+                            />
+                        }
+                    />*/
                     <Route
                         path="/"
-                        element={
-                            <>
-                                <Table
-                                    characterData={characters}
-                                    removeCharacter={
-                                        removeOneCharacter
-                                    }
-                                />
-                            </>
-                        }
+                        element={<Homepage />}
                     />
                     <Route
                         path="/login"
@@ -193,15 +196,20 @@ function MyApp() {
                     <Route
                         path="/signup"
                         element={
-                            <Login
+                            <SignUp
                                 handleSubmit={signupUser}
                                 buttonLabel="Sign Up"
                             />
                         }
+                    />
+                    <Route
+                        path="/makegroup"
+                        element={<MakeGroup />}
                     />
                 </Routes>
             </div>
         </BrowserRouter>
     );
 }
-export default MyApp;
+
+export default App;
