@@ -225,28 +225,5 @@ export async function verifyUserInGroup(groupId, userId) {
         throw new Error(error);
     }
 
-    return !!data;
-}
-
-
-export async function getGroupTasks(group_id) {
-    const { data, error } = await db
-        .from("tasks")
-        .select(`
-            id,
-            name,
-            difficulty,
-            status,
-            deadline,
-            approved_by,
-            group_members:group_member_id!inner(user_id)
-        `)
-        .match({
-            "group_members.group_id": group_id
-        });
-
-    if (error) {
-        throw new Error(error);
-    }
-    return data;
+    return !!data.length;
 }

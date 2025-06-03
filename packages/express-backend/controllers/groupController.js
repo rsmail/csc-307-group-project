@@ -155,21 +155,3 @@ export async function removeGroupMember(req, res) {
         res.status(500).send(error);
      }
 }
-
-export async function getGroupTasks(req, res) {
-    try {
-        const token = req.headers.authorization;
-        const user_id = getUserId(token);
-        const group_id = req.params.id;
-
-        if (!(await groupService.verifyUserInGroup(group_id, user_id))) {
-            return res.status(401).send("User not in group");
-        }
-
-        const tasks = await groupService.getGroupTasks(group_id)
-        res.status(200).send(tasks);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send(error);
-    }
-}

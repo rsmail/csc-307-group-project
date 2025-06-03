@@ -2,6 +2,7 @@
 
 import express from "express";
 import * as groupController from "../controllers/groupController.js";
+import * as taskController from "../controllers/taskController.js";
 import { authenticateToken } from "../controllers/authController.js"
 
 const router = express();
@@ -25,6 +26,9 @@ router.get('/groups/:id', authenticateToken, groupController.getGroupMembers);
 router.post('/groups/:id', authenticateToken, groupController.sendGroupInvite);
 router.patch('/groups/:id', authenticateToken, groupController.acceptGroupInvite);
 router.delete('/groups/:id', authenticateToken, groupController.removeGroupMember);
-router.get('/groups/:id/tasks', authenticateToken, groupController.getGroupTasks);
+
+router.get('/groups/:id/tasks', authenticateToken, taskController.getGroupTasks);
+router.post('/groups/:id/tasks', authenticateToken, taskController.createNewTask)
+
 
 export default router;
