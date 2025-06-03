@@ -22,13 +22,13 @@ function SignUp(props) {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h1 className="login-title">Chore Core</h1>
-        <h2 className="login-subtitle">Create and account</h2>
-        <p className="login-subtext">Enter your email to sign up for this app</p>
+    <div className="signup-container">
+      <div className="signup-box">
+        <h1 className="signup-title">Chore Core</h1>
+        <h2 className="signup-subtitle">Create an account</h2>
+        <p className="signup-subtext">Enter your email to sign up for this app</p>
 
-        <form className="login-form" onSubmit={submitForm}>
+        <form className="signup-form" onSubmit={submitForm}>
           <input
             type="text"
             name="username"
@@ -36,9 +36,7 @@ function SignUp(props) {
             value={creds.username}
             onChange={handleChange}
           />
-          
           <button type="submit">Continue</button>
-          
         </form>
       </div>
     </div>
