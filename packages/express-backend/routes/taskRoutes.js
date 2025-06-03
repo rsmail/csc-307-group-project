@@ -6,7 +6,8 @@ import * as taskController from "../controllers/taskController.js";
 
 const router = express();
 
-router.get("/tasks", authenticateToken, taskController.getAllTasks);
+router.get("/tasks", authenticateToken, taskController.getAllUserTasks);
+router.post("/tasks", authenticateToken, taskController.createNewTask);
 
 
 export default router;

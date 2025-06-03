@@ -193,7 +193,7 @@ export async function getUserGroups(userId) {
 export async function getGroupMembers(groupId) {
     const { data, error } = await db
         .from("group_members")
-        .select("user_id, users(firstname, lastname)")
+        .select("id, user_id, users(firstname, lastname)")
         .match({
             group_id: groupId,
             status: "ACCEPTED"
@@ -204,6 +204,7 @@ export async function getGroupMembers(groupId) {
     }
 
     return data.map(item => ({
+        group_member_id: item.id,
         user_id: item.user_id,
         firstname: item.users.firstname,
         lastname: item.users.lastname
@@ -227,3 +228,25 @@ export async function verifyUserInGroup(groupId, userId) {
     return !!data;
 }
 
+
+export async function getGroupTasks(group_id) {
+    const { data, error } = await db
+        .from("tasks")
+        .select(`
+            id,
+            name,
+            difficulty,
+            status,
+            deadline,
+            approved_by,
+            group_members:group_member_id!inner(user_id)
+        `)
+        .match({
+            "group_members.group_id": group_id
+        });
+
+    if (error) {
+        throw new Error(error);
+    }
+    return data;
+}

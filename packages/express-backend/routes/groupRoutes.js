@@ -25,7 +25,6 @@ router.get('/groups/:id', authenticateToken, groupController.getGroupMembers);
 router.post('/groups/:id', authenticateToken, groupController.sendGroupInvite);
 router.patch('/groups/:id', authenticateToken, groupController.acceptGroupInvite);
 router.delete('/groups/:id', authenticateToken, groupController.removeGroupMember);
-
-
+router.get('/groups/:id/tasks', authenticateToken, groupController.getGroupTasks);
 
 export default router;
