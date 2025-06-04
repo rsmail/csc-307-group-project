@@ -3,12 +3,12 @@
 import db from "../utils/db.js";
 
 /**
- * Fetches all tasks for the user
+ * Fetches all IN_PROGRESS tasks for the user
  * @param {*} user_id 
  * @returns A list of tasks
  */
-export async function getAllUserTasks(user_id) {
-    const { data, error } = await db
+export async function getAllUserTasks(user_id, status = null) {
+    let query = db
         .from("tasks")
         .select(`
                 id,
@@ -21,6 +21,12 @@ export async function getAllUserTasks(user_id) {
         .match({
             "group_members.user_id": user_id
         });
+
+    if (typeof status === 'string' && status.length > 0) {
+        query.eq("status", status);
+    }
+
+    const { data, error } = await query;
     
     if (error) {
         throw new Error(error);
@@ -42,8 +48,8 @@ export async function getAllUserTasks(user_id) {
  * @param {*} group_id 
  * @returns A list of tasks
  */
-export async function getGroupTasks(group_id) {
-    const { data, error } = await db
+export async function getGroupTasks(group_id, status = null) {
+    let query = db
         .from("tasks")
         .select(`
             id,
@@ -51,17 +57,29 @@ export async function getGroupTasks(group_id) {
             difficulty,
             status,
             deadline,
-            approved_by,
             group_members:group_member_id!inner(user_id)
         `)
         .match({
             "group_members.group_id": group_id
         });
 
+    if (typeof status === 'string' && status.length > 0) {
+        query = query.eq("status", status);
+    }
+
+    const { data, error } = await query;
+
     if (error) {
         throw new Error(error);
     }
-    return data;
+    return data.map(task => ({
+        task_id : task.id,
+        name: task.name,
+        difficulty: task.difficulty,
+        status: task.status,
+        deadline: task.deadline,
+        assigned_to: task.group_members.group_id
+    }));
 }
 
 
@@ -102,7 +120,7 @@ export async function markTaskComplete(task_id) {
     const { error } = await db
         .from("tasks")
         .update({
-            status : "APPROVAL_NEEDED"
+            status : "COMPLETED"
         })
         .match({
             id: task_id
@@ -113,6 +131,23 @@ export async function markTaskComplete(task_id) {
     }
 
     return;
+}
+
+
+export async function approveTask(task_id, user_id) {
+    const { error } = await db
+        .from("tasks")
+        .update({
+            status : "COMPLETED",
+            approved_by: user_id
+        })
+        .match({
+            id : task_id
+        });
+    
+    if (error) {
+        throw new Error(error);
+    }
 }
 
 /**
