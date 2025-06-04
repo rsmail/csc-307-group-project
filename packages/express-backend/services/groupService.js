@@ -8,12 +8,13 @@ import db from "../utils/db.js";
  * @param {*} ownerId 
  * @returns The groupId
  */
-export async function createGroup(groupName, ownerId) {
+export async function createGroup(groupName, groupDescription, ownerId) {
     // Inserting new group and returning group_id
     const { data, error } = await db
         .from("groups")
         .insert({
             groupName : groupName,
+            description : groupDescription,
             groupOwner : ownerId
         })
         .select();

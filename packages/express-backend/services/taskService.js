@@ -7,7 +7,7 @@ import db from "../utils/db.js";
  * @param {*} user_id 
  * @returns A list of tasks
  */
-export async function getAllUserTasks(user_id, status = null) {
+export async function getAllUserTasks(user_id, status = null, order = null) {
     let query = db
         .from("tasks")
         .select(`
@@ -25,6 +25,10 @@ export async function getAllUserTasks(user_id, status = null) {
     if (typeof status === 'string' && status.length > 0) {
         query.eq("status", status);
     }
+    if (typeof order === 'string' && order.length > 0) {
+        query = query.order("deadline", {ascending: order === 'asc'});
+    }
+
 
     const { data, error } = await query;
     
@@ -48,7 +52,7 @@ export async function getAllUserTasks(user_id, status = null) {
  * @param {*} group_id 
  * @returns A list of tasks
  */
-export async function getGroupTasks(group_id, status = null) {
+export async function getGroupTasks(group_id, status = null, order = null) {
     let query = db
         .from("tasks")
         .select(`
@@ -65,6 +69,9 @@ export async function getGroupTasks(group_id, status = null) {
 
     if (typeof status === 'string' && status.length > 0) {
         query = query.eq("status", status);
+    }
+    if (typeof order === 'string' && order.length > 0) {
+        query = query.order("deadline", {ascending: order === 'asc'});
     }
 
     const { data, error } = await query;
