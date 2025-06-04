@@ -29,7 +29,7 @@ router.delete('/groups/:id', authenticateToken, groupController.removeGroupMembe
 
 router.get('/groups/:id/tasks', authenticateToken, taskController.getGroupTasks);
 router.post('/groups/:id/tasks', authenticateToken, taskController.createNewTask)
-router.delete('/groups/:id/tasks/task_id', authenticateToken, taskController.deleteTask);
+router.delete('/groups/:id/tasks/:task_id', authenticateToken, taskController.deleteTask);
 
 
 export default router;
