@@ -4,7 +4,7 @@ import Form from "./Form";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
-import Homepage from "./Homepage"; 
+import Homepage from "./HomePage"; 
 import {
     BrowserRouter,
     Routes,
