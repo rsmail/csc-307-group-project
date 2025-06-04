@@ -21,7 +21,7 @@ export async function getAllUserTasks(req, res) {
         return res.status(200).send(tasks);
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -47,7 +47,7 @@ export async function getGroupTasks(req, res) {
         return res.status(200).send(tasks);
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -71,7 +71,7 @@ export async function createNewTask(req, res) {
         return res.status(201).send(task);
 
     } catch (error) {
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -100,7 +100,26 @@ export async function markTaskComplete(req, res) {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
+    }
+}
+
+export async function deleteTask(req, res) {
+    try {
+        const token = req.headers.authorization;
+        const user_id = getUserId(token);
+        const group_id = req.params.id;
+        const task_id = req.params.task_id;
+
+        if (!(await verifyUserInGroup(group_id, user_id))) {
+            return res.status(401).send("User not in group");
+        }
+
+        await taskService.deleteTask(task_id);
+        return res.status(200).send("Task successfully deleted");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -129,6 +148,6 @@ export async function approveTask(req, res) {
         res.status(200).send();
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }

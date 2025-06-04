@@ -29,7 +29,7 @@ export async function getAllUserTasks(user_id, status = null) {
     const { data, error } = await query;
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(task => ({
@@ -70,7 +70,7 @@ export async function getGroupTasks(group_id, status = null) {
     const { data, error } = await query;
 
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
     return data.map(task => ({
         task_id : task.id,
@@ -106,7 +106,7 @@ export async function createNewTask(payload) {
         .select();
         
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data;
@@ -127,7 +127,7 @@ export async function markTaskComplete(task_id) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return;
@@ -146,7 +146,18 @@ export async function approveTask(task_id, user_id) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
+    }
+}
+
+export async function deleteTask(task_id) {
+    const { error } = await db
+        .from("tasks")
+        .delete()
+        .eq("id", task_id);
+    
+    if (error) {
+        throw new Error(error.message);
     }
 }
 
@@ -170,7 +181,7 @@ export async function verifyTaskAssignedToUser(task_id, user_id) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return !!data.length;

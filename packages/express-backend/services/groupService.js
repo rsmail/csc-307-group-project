@@ -19,7 +19,7 @@ export async function createGroup(groupName, ownerId) {
         .select();
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     const group = data[0];
@@ -43,7 +43,7 @@ export async function addOwnerToGroup(groupId, ownerId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -62,7 +62,7 @@ export async function inviteUserToGroup(groupId, userId) {
         });
 
         if (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     
     return;
@@ -87,7 +87,7 @@ export async function acceptGroupInvite(groupId, userId) {
         .select();
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     if (!data) {
@@ -114,7 +114,7 @@ export async function declineGroupInvite(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -133,7 +133,7 @@ export async function getUsersPendingInvites(userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
@@ -157,7 +157,7 @@ export async function removeUserFromGroup(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -176,7 +176,7 @@ export async function getUserGroups(userId) {
         });
 
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
@@ -200,7 +200,7 @@ export async function getGroupMembers(groupId) {
         });
 
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
@@ -222,7 +222,7 @@ export async function verifyUserInGroup(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return !!data.length;

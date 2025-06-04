@@ -4,6 +4,7 @@ import db from "../utils/db.js";
 
 /**
  * Get user's profile
+ * Unimplemented
  * @param {*} user_id 
  * @returns A user's firstname, lastname, and email
  */
@@ -14,8 +15,7 @@ async function getUserProfile(user_id) {
         .match({id: user_id});
     
     if (error) {
-        console.log(error);
-        return -1;
+        throw new Error(error.message)
     }
 
     return data[0];
