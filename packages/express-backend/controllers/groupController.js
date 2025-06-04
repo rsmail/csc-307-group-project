@@ -18,7 +18,7 @@ export async function getUserGroups(req, res) {
         return res.status(200).send(groups);
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -39,7 +39,7 @@ export async function createGroup(req, res) {
         return res.status(201).send(group_id);
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -65,7 +65,7 @@ export async function sendGroupInvite(req, res) {
         return res.status(201).send("User successfully invited");
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -84,7 +84,7 @@ export async function acceptGroupInvite(req, res) {
         return res.status(200).send("User successfull accepted invite");
     } catch (error) {
         console.log(error);
-        return res.status(500).send(error);
+        return res.status(500).send({error: error.message});
     }
 }
 
@@ -108,7 +108,7 @@ export async function getGroupMembers(req, res) {
         return res.status(200).send(members);
     } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
     }
 }
 
@@ -127,7 +127,7 @@ export async function getPendingInvites(req, res) {
         return res.status(200).send(groups);
     } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
     }
 }
 
@@ -152,6 +152,6 @@ export async function removeGroupMember(req, res) {
         return res.status(204).send("User successfully removed");
      } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
      }
 }
