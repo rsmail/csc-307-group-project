@@ -37,6 +37,7 @@ function App() {
                         setMessage(
                             `Login successful; auth token saved`
                         );
+                        window.location.href = "/";
                     });
                 } else {
                     setMessage(
@@ -172,21 +173,21 @@ function App() {
                     <Link to="/signup">Signup</Link>
                 </nav>
                 <p>{message}</p>
-
-                /*<Routes>
+                /*
+                <Routes>
                     <Route
                         path="/table"
                         element={
                             <Table
                                 characters={characters}
-                                removeOneCharacter={removeOneCharacter}
+                                removeOneCharacter={
+                                    removeOneCharacter
+                                }
                             />
                         }
-                    />*/
-                    <Route
-                        path="/"
-                        element={<Homepage />}
                     />
+                    */
+                    <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
                         element={

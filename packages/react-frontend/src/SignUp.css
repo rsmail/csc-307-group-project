@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;       /* vertical center */
   justify-content: center;   /* horizontal center */
-  position: fixed;           /* ensure full screen and no scroll jump */
+  position: relative;           /* 'fixed' ensure full screen and no scroll jump */
   top: 0;
   left: 0;
 }
@@ -55,6 +55,7 @@
   border: 1px solid #ccc;
   border-radius: 12px;
   background: white;
+  color: black;
   box-sizing: border-box;
 }
 
