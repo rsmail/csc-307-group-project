@@ -48,6 +48,25 @@ export async function addOwnerToGroup(groupId, ownerId) {
 }
 
 /**
+ * Deletes a group matching (group_id, user_id)
+ * @param {*} group_id 
+ * @param {*} owner_id 
+ */
+export async function deleteGroup(group_id, owner_id) {
+    const { error } = await db
+        .from("groups")
+        .delete()
+        .match({
+            "id": group_id,
+            "groupOwner": owner_id
+        });
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+}
+
+/**
  * Adds an entry to group_members and set status to pending
  * @param {*} groupId 
  * @param {*} userId

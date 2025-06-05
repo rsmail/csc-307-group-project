@@ -14,14 +14,17 @@ import bcrypt from "bcrypt";
  * @param {*} password A user's password
  * @returns A token on success, -1 on failure
  */
-async function loginUser({ email, password }) {
+export async function loginUser({ email, password }) {
     const { data, error } = await db
         .from("users")
         .select("id, password")
         .match({ email: email });
 
-    if (error || data.length === 0) {
+    if (error) {
         throw new Error(error.message);
+    }
+    if (data.length === 0) {
+        throw new Error("User does not exist");
     }
 
     const user = data[0];
@@ -33,7 +36,7 @@ async function loginUser({ email, password }) {
 
         return token;
     }
-    throw new Error("Unable to process request");
+    throw new Error("Incorrect username or password");
 }
 
 /**
@@ -42,7 +45,7 @@ async function loginUser({ email, password }) {
  * @param {*} password
  * @returns A token on success, -1 on failure
  */
-async function registerUser({
+export async function registerUser({
     email,
     password,
     firstname,
@@ -71,11 +74,26 @@ async function registerUser({
 }
 
 /**
+ * Delete's an existing user
+ * @param {*} token 
+ */
+export async function deleteUser(token) {
+    const user_id = getUserId(token);
+
+    const { error } = await db
+        .from("users")
+        .delete()
+        .eq("id", user_id);
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+}
+
+/**
  * Verifies authentication of a user based on their token
  * @param {*} token
  */
-async function authenticateUser(token) {
+export async function authenticateUser(token) {
     return verifyToken(token);
 }
-
-export default { loginUser, registerUser, authenticateUser };
