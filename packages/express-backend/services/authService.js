@@ -94,6 +94,6 @@ export async function deleteUser(token) {
  * Verifies authentication of a user based on their token
  * @param {*} token
  */
-export async function authenticateUser(token) {
+export function authenticateUser(token) {
     return verifyToken(token);
 }

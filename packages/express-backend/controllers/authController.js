@@ -1,10 +1,9 @@
 // controllers/authController.js
 
-import authService from "../services/authService.js";
+import * as authService from "../services/authService.js";
 
 export async function login(req, res) {
     try {
-        console.log(req);
         const token = await authService.loginUser(req.body);
         res.status(200).send({token: token});
     } catch (error) {

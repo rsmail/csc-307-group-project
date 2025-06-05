@@ -9,13 +9,13 @@ let token2;
 beforeAll(async () => {
     // Create new users for all testing
     const payload1 = {
-        "email" : "vitest@email.com",
+        "email" : "vitestGroups@email.com",
         "password": "1234",
         "firstname": "vi",
         "lastname": "test"
     };
     const payload2 = {
-        "email" :"vitest2@email.com",
+        "email" :"vitestGroups2@email.com",
         "password": "1234",
         "firstname": "vi2",
         "lastmane" : "test"
