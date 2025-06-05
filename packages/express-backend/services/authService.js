@@ -21,7 +21,7 @@ async function loginUser({ email, password }) {
         .match({ email: email });
 
     if (error || data.length === 0) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     const user = data[0];
@@ -62,8 +62,7 @@ async function registerUser({
         .select();
 
     if (error) {
-        console.log(error);
-        throw new Error(error);
+        throw new Error(error.message);
     }
     const user = data[0];
     const token = await generateToken(user.id);

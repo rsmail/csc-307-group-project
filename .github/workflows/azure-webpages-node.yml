@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -34,6 +34,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: chorecore-api
-          slot-name: production
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}  
           package: release.zip

@@ -9,7 +9,7 @@ export async function login(req, res) {
         res.status(200).send({token: token});
     } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
     }
 };
 
@@ -18,7 +18,7 @@ export async function register(req, res) {
         const token = await authService.registerUser(req.body);
         res.status(200).send({token: token});
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({error: error.message});
     }
 }
 
