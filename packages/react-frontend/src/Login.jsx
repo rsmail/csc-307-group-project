@@ -112,14 +112,14 @@ function Login(props) {
     const { name, value } = event.target;
     setCreds((prev) => ({
       ...prev,
-      [name === "username" ? "username" : "pwd"]: value,
+      [name]: value,
     }));
   }
 
   function submitForm(e) {
     e.preventDefault();
     props.handleSubmit(creds);
-    setCreds({ username: "", pwd: "" });
+    setCreds({ email: "", pwd: "" });
   }
 
   return (
@@ -132,9 +132,9 @@ function Login(props) {
         <form className="login-form" onSubmit={submitForm}>
           <input
             type="text"
-            name="username"
+            name="email"
             placeholder="email@domain.com"
-            value={creds.username}
+            value={creds.email}
             onChange={handleChange}
           />
           <input
