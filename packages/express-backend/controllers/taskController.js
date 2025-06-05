@@ -107,6 +107,11 @@ export async function markTaskComplete(req, res) {
     }
 }
 
+/**
+ * Deletes a particular task
+ * @param {*} req params: {group_id} and {task_id}
+ * @param {*} res 
+ */
 export async function deleteTask(req, res) {
     try {
         const token = req.headers.authorization;
