@@ -16,8 +16,9 @@ export async function getAllUserTasks(req, res) {
         const token = req.headers.authorization;
         const user_id = getUserId(token);
         const status = typeof req.query.status === 'string' ? req.query.status : null;
+        const order = typeof req.query.order === 'string' ? req.query.order : null;
 
-        const tasks = await taskService.getAllUserTasks(user_id, status);
+        const tasks = await taskService.getAllUserTasks(user_id, status, order);
         return res.status(200).send(tasks);
     } catch (error) {
         console.log(error);
@@ -27,7 +28,8 @@ export async function getAllUserTasks(req, res) {
 
 /**
  * Fetches all tasks belonging to a group
- * Optional query parameter of status
+ * 
+ * Optional query parameter of status and deadline (asc or desc)
  * @param {*} req 
  * @param {*} res 
  * @returns A list of the group's tasks
@@ -38,12 +40,13 @@ export async function getGroupTasks(req, res) {
         const user_id = getUserId(token);
         const group_id = req.params.id;
         const status = typeof req.query.status === 'string' ? req.query.status : null;
+        const order = typeof req.query.order === 'string' ? req.query.order : null;
 
         if (!(await verifyUserInGroup(group_id, user_id))) {
             return res.status(401).send("User not in group");
         }
 
-        const tasks = await taskService.getGroupTasks(group_id, status)
+        const tasks = await taskService.getGroupTasks(group_id, status, order);
         return res.status(200).send(tasks);
     } catch (error) {
         console.log(error);

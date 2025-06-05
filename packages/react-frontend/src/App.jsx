@@ -69,7 +69,7 @@ function App() {
                     });
                 } else {
                     setMessage(
-                        `Signup Error ${response.status}: ${response.data}`
+                        "An account with this email already exists."
                     );
                 }
             })

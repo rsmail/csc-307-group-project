@@ -33,10 +33,11 @@ export async function createGroup(req, res) {
     try {
         const token = req.headers.authorization;
         const user_id = getUserId(token);
-        const group_name = req.body.group_name
+        const group_name = req.body.group_name;
+        const group_description = req.body.group_description;
 
-        const group_id = await groupService.createGroup(group_name, user_id);
-        return res.status(201).send(group_id);
+        const group_id = await groupService.createGroup(group_name, group_description, user_id);
+        return res.status(201).send({group_id: group_id});
     } catch (error) {
         console.log(error);
         return res.status(500).send({error: error.message});
