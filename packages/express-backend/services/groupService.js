@@ -121,12 +121,9 @@ export async function acceptGroupInvite(groupId, userId) {
  * @param {*} userId 
  */
 export async function declineGroupInvite(groupId, userId) {
-    // Should we delete the entry instead? This would allow for reinvites
     const { error } = await db
         .from("group_members")
-        .update({
-            status: "DECLINED"
-        })
+        .delete()
         .match({
             user_id: userId,
             group_id: groupId,
