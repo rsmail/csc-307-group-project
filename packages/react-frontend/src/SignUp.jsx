@@ -21,11 +21,6 @@ function SignUp(props) {
     function submitForm(e) {
         e.preventDefault();
 
-        if (!creds.email || !creds.pwd || !creds.confirmpwd) {
-            alert("Please fill out all required fields.");
-            return;
-        }
-
         if (creds.pwd !== creds.confirmpwd) {
             alert("Passwords do not match.");
             return;
