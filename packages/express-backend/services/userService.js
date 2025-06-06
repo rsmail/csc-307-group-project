@@ -8,7 +8,7 @@ import db from "../utils/db.js";
  * @param {*} user_id 
  * @returns A user's firstname, lastname, and email
  */
-export async function getUserProfile(user_id) {
+async function getUserProfile(user_id) {
     const { data, error } = await db
         .from("users")
         .select("firstname, lastname, email")

@@ -4,8 +4,6 @@
     "type": "module",
     "main": "backend.js",
     "scripts": {
-        "test": "vitest",
-        "coverage": "vitest run --coverage",
         "lint": "npx eslint . && npx prettier --check .",
         "test": "echo \"No tests yet\"",
         "dev": "npx nodemon backend.js",
@@ -28,11 +26,6 @@
         "@eslint/compat": "^1.2.9",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.25.1",
-        "@vitest/coverage-v8": "^3.2.1",
-        "eslint": "^9.25.1",
-        "install": "^0.13.0",
-        "jest": "^29.7.0",
-        "npm": "^11.4.1",
-        "vitest": "^3.2.1"
+        "eslint": "^9.25.1"
     }
 }
