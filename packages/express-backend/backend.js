@@ -10,7 +10,16 @@ import taskRoutes from "./routes/taskRoutes.js";
 
 const router = express();
 
-router.use(cors());
+const allowedOrigins = ["https://mango-tree-075bf651e.6.azurestaticapps.net"];
+
+router.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  })
+);
+
 router.use(express.json());
 
 router.use('/', authRoutes);
