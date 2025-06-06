@@ -27,8 +27,8 @@ router.post('/groups/:id', authenticateToken, groupController.sendGroupInvite);
 router.patch('/groups/:id', authenticateToken, groupController.acceptGroupInvite);
 router.delete('/groups/:id', authenticateToken, groupController.removeGroupMember);
 
-//router.get('/groups/:id/tasks', authenticateToken, taskController.getGroupTasks);
-//router.post('/groups/:id/tasks', authenticateToken, taskController.createNewTask)
+router.get('/groups/:id/tasks', authenticateToken, taskController.getGroupTasks);
+router.post('/groups/:id/tasks', authenticateToken, taskController.createNewTask)
 router.delete('/groups/:id/tasks/:task_id', authenticateToken, taskController.deleteTask);
 
 

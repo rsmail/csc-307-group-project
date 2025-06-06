@@ -39,7 +39,7 @@ const GroupList = ({ groups, onSelectGroup }) => (
   </div>
 );
 
-const TaskList = ({ tasks }) => (
+const ProgressList = ({ groups }) => (
   <div className="list-container">
     <h2 className="list-title">Progress</h2>
     <div className="vertical-scroll-wrapper">
