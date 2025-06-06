@@ -8,6 +8,8 @@ import Homepage from "./HomePage";
 import MakeTask from "./MakeTask";
 import GroupMembers from "./GroupMembers";
 import MyTasks from "./MyTasks";
+// import AssignTask from "./AssignTask";
+
 import {
     BrowserRouter,
     Routes,
@@ -38,7 +40,11 @@ function App() {
                 if (response.status === 200) {
                     response.json().then((payload) => {
                         setToken(payload.token);
-                        localStorage.setItem("token", payload.token);
+                        localStorage.setItem(
+                            "token",
+                            payload.token
+                        );
+
                         setMessage(
                             `Login successful; auth token saved`
                         );
@@ -69,6 +75,10 @@ function App() {
                 if (response.ok) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem(
+                            "token",
+                            payload.token
+                        );
                         setMessage(
                             `Signup successful for user: ${creds.email}; auth token saved`
                         );
@@ -84,6 +94,13 @@ function App() {
             });
 
         return promise;
+    }
+
+    function logoutUser() {
+        localStorage.removeItem("token");
+        setToken(INVALID_TOKEN);
+        setMessage("Logged out successfully");
+        window.location.href = "/";
     }
 
     function updateList(person) {
@@ -139,13 +156,14 @@ function App() {
     }
 
     useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        if (storedToken) setToken(storedToken);
-    }, []);
+        const savedToken = localStorage.getItem("token");
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        if (storedToken) setToken(storedToken);
+        if (savedToken) {
+            setToken(savedToken);
+        } else {
+            setToken(INVALID_TOKEN);
+        }
+
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
@@ -182,6 +200,19 @@ function App() {
                     <Link to="/home">Home</Link> |{" "}
                     <Link to="/login">Login</Link> |{" "}
                     <Link to="/signup">Signup</Link>
+                    {token !== INVALID_TOKEN && (
+                        <>
+                            {" | "}
+                            <Link
+                                to="/"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    logoutUser();
+                                }}>
+                                Logout
+                            </Link>
+                        </>
+                    )}
                 </nav>
                 <p>{message}</p>
 
