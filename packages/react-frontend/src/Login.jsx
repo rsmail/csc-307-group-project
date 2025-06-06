@@ -7,6 +7,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  console.log("ENV Variables: ", import.meta.env);
   console.log("API_PREFIX: ", API_PREFIX); // Test to see if azure is getting this correctly.
 
   const handleLogin = async (e) => {
