@@ -1,10 +1,8 @@
-import React, { useState } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 
 import './HomePage.css';
 import GroupPage from './GroupPage';
-
-const tasks = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
 
 const ProgressBar = ({ completed, total }) => {
   const percent = Math.round((completed / total) * 100);
@@ -32,8 +30,8 @@ const GroupList = ({ groups, onSelectGroup }) => (
       <div className="scroll-gradient right" />
       <div className="scroll-content">
         {groups.map((group, index) => (
-          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group.name)}>
-            <div>{group.name}</div>
+          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group.group_name)}>
+            <div>{group.group_name}</div>
           </div>
         ))}
       </div>
@@ -47,8 +45,8 @@ const ProgressList = ({ groups }) => (
     <div className="vertical-scroll-wrapper">
       {groups.map((group, index) => (
         <div key={index} className="progress-item">
-          <div className="progress-group-name">{group.name}</div>
-          <ProgressBar completed={group.completedTasks} total={group.totalTasks} />
+          <div className="progress-group-name">{group.group_name}</div>
+          <ProgressBar completed={group.completed_tasks} total={group.total_tasks} />
         </div>
       ))}
     </div>
@@ -64,7 +62,7 @@ const ScrollableList = ({ title, items }) => (
       <div className="scroll-content">
         {items.map((item, index) => (
           <div key={index} className="scroll-item">
-            {item}
+            {item.name}
           </div>
         ))}
       </div>
@@ -72,28 +70,78 @@ const ScrollableList = ({ title, items }) => (
   </div>
 );
 
-const groupList = [
-  { name: 'Group A', completedTasks: 3, totalTasks: 5 },
-  { name: 'Group B', completedTasks: 2, totalTasks: 4 },
-  { name: 'Group C', completedTasks: 3, totalTasks: 5 },
-  { name: 'Group D', completedTasks: 3, totalTasks: 3 },
-  { name: 'Group E', completedTasks: 2, totalTasks: 2 }
-];
-
 const Homepage = () => {
   const [selectedGroupName, setSelectedGroupName] = useState(null);
+  const [groups, setGroups] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  const navigate = useNavigate();
+
+  useEffect( () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+    } else {
+      const fetchGroups = async () => {
+        try {
+          const result = await fetch(`${API_PREFIX}/groups`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `${token}`,
+            },
+          });
+
+          if (result.ok) {
+            const data = await result.json();
+            setGroups(data);
+          } else {
+            const error = await result.json();
+            console.log(error);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
+      const fetchTasks = async () => {
+        try {
+          const result = await fetch(`${API_PREFIX}/tasks?status=IN_PROGRESS`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `${token}`,
+            },
+          });
+
+          if (result.ok) {
+            const data = await result.json();
+            console.log(data);
+            setTasks(data);
+          } else {
+            const error = await result.json();
+            console.log(error);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      fetchGroups();
+      fetchTasks();
+    }
+  }, []);
 
   return (
     <div className="homepage">
       <h1 className="homepage-title">Chore Core</h1>
       {!selectedGroupName ? (
         <>
-          <GroupList groups={groupList} onSelectGroup={setSelectedGroupName} />
+          <GroupList groups={groups} onSelectGroup={setSelectedGroupName} />
           <ScrollableList title="Tasks" items={tasks} />
           <div style={{ textAlign: 'right', marginBottom: '10px' }}>
             <Link to="/mytasks" className="make-group-button">My Tasks</Link>
           </div>
-          <ProgressList groups={groupList} />
+          <ProgressList groups={groups} />
         </>
       ) : (
         <GroupPage group={selectedGroupName} onBack={() => setSelectedGroupName(null)} />

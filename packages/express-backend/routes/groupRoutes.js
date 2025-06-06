@@ -17,7 +17,7 @@ All calls with :id require a group_id
 For calls that require a body, hover over the function for more information
 
 */
-router.get('/groups', authenticateToken, groupController.getUserGroups); 
+router.get('/groups', authenticateToken, groupController.getUserGroupWithTasks); 
 router.post('/groups', authenticateToken, groupController.createGroup);
 
 router.get('/groups/invites', authenticateToken, groupController.getPendingInvites);
