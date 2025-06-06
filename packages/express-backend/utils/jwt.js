@@ -13,7 +13,7 @@ function generateToken(user_id) {
         jwt.sign(
             { user_id: user_id},
             process.env.TOKEN_SECRET,
-            { expiresIn: "1d" },
+            { expiresIn: "6hr" },
             (error, token) => {
                 if (error) {
                     reject(error);
@@ -30,7 +30,7 @@ function generateToken(user_id) {
  * @param {*} token 
  * @returns `boolean`
  */
-async function verifyToken(token) {
+function verifyToken(token) {
     try {
         jwt.verify(token, process.env.TOKEN_SECRET);
         return true;
