@@ -139,8 +139,8 @@ function Login(props) {
           />
           <input
             type="password"
-            name="password"
-            placeholder="password"
+            name="pwd"
+            placeholders="password"
             value={creds.pwd}
             onChange={handleChange}
           />

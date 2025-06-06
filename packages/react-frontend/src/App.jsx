@@ -27,13 +27,14 @@ function App() {
             },
             body: JSON.stringify({
                 email: creds.email,
-                password: creds.password
+                password: creds.pwd
             })
         })
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem("token", payload.token);
                         setMessage(
                             `Login successful; auth token saved`
                         );
@@ -134,7 +135,13 @@ function App() {
     }
 
     useEffect(() => {
-        setToken(INVALID_TOKEN);
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) setToken(storedToken);
+    }, []);
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) setToken(storedToken);
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
@@ -186,7 +193,7 @@ function App() {
                             />
                         }
                     />
-                    */
+                */
                     <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
