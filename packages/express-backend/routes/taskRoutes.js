@@ -1,16 +1,14 @@
-// routes/taskRoutes.js
+// routes/taskRoute.js
 
 import express from "express";
-import * as taskController from "../controllers/taskController.js";
 import { authenticateToken } from "../controllers/authController.js";
+import * as taskController from "../controllers/taskController.js";
 
 const router = express();
 
-router.get("/tasks", authenticateToken, taskController.getUserTasks);
-router.post("/tasks", authenticateToken, taskController.createTask);
-router.get("/tasks/group/:id", authenticateToken, taskController.getTasksForGroup);
-router.patch("/tasks/:id", authenticateToken, taskController.updateTask);
-router.delete("/tasks/:id", authenticateToken, taskController.deleteTask);
+router.get("/tasks", authenticateToken, taskController.getAllUserTasks);
+
+router.patch("/tasks/:id", authenticateToken, taskController.markTaskComplete);
+
 
 export default router;
-
