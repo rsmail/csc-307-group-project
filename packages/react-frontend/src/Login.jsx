@@ -7,8 +7,6 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
-  console.log("ENV Variables: ", import.meta.env);
-  console.log("API_PREFIX: ", API_PREFIX); // Test to see if azure is getting this correctly.
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +24,7 @@ function Login(props) {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("token", data.token);
-        navigate("/");
+        navigate("/home");
       } else {
         alert("Invalid email or password");
       }
@@ -59,7 +57,7 @@ function Login(props) {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">Continue</button>
-          <button type="button" onClick={() => navigate("/register")}>
+          <button type="button" onClick={() => navigate("/signup")}>
             Create an account
           </button>
         </form>

@@ -4,14 +4,18 @@ import Form from "./Form";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
-import Homepage from "./HomePage";
-import AssignTask from "./AssignTask";
+import Homepage from "./HomePage"; 
+import MakeTask from "./MakeTask";
+import GroupMembers from "./GroupMembers";
+import MyTasks from "./MyTasks";
+// import AssignTask from "./AssignTask";
 
 import {
     BrowserRouter,
     Routes,
     Route,
-    Link
+    Link,
+    Navigate
 } from "react-router-dom";
 
 function App() {
@@ -19,7 +23,7 @@ function App() {
     const INVALID_TOKEN = "INVALID_TOKEN";
     const [token, setToken] = useState(INVALID_TOKEN);
     const [message, setMessage] = useState("");
-    const API_PREFIX = import.meta.env.VITE_API_PREFIX; // API_PREFIX must be defined with VITE_
+    const API_PREFIX = import.meta.env.VITE_API_PRPEFIX;
 
     function loginUser(creds) {
         const promise = fetch(`${API_PREFIX}/login`, {
@@ -193,7 +197,7 @@ function App() {
         <BrowserRouter>
             <div className="container">
                 <nav>
-                    <Link to="/">Home</Link> |{" "}
+                    <Link to="/home">Home</Link> |{" "}
                     <Link to="/login">Login</Link> |{" "}
                     <Link to="/signup">Signup</Link>
                     {token !== INVALID_TOKEN && (
@@ -211,8 +215,9 @@ function App() {
                     )}
                 </nav>
                 <p>{message}</p>
-                /*
+
                 <Routes>
+                    <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route
                         path="/table"
                         element={
@@ -224,31 +229,13 @@ function App() {
                             />
                         }
                     />
-                */
-                    <Route path="/" element={<Homepage />} />
-                    <Route
-                        path="/login"
-                        element={
-                            <Login handleSubmit={loginUser} />
-                        }
-                    />
-                    <Route
-                        path="/register"
-                        element={
-                            <SignUp
-                                handleSubmit={signupUser}
-                                buttonLabel="Sign Up"
-                            />
-                        }
-                    />
-                    <Route
-                        path="/makegroup"
-                        element={<MakeGroup />}
-                    />
-                    <Route
-                        path="/assigntask"
-                        element={<AssignTask />}
-                    />
+                    <Route path="/home" element={<Homepage />} />
+                    <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+                    <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
+                    <Route path="/makegroup" element={<MakeGroup />} />
+                    <Route path="/maketask" element={<MakeTask />} />
+                    <Route path="/groups/:groupName/members" element={<GroupMembers />} />
+                    <Route path="/mytasks" element={<MyTasks />} />
                 </Routes>
             </div>
         </BrowserRouter>

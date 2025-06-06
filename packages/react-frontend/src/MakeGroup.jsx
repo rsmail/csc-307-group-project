@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MakeGroup.css"; // Import custom CSS
 import { useNavigate } from "react-router-dom";
 
+
 const MakeGroup = () => {
     const [groupName, setGroupName] = useState("");
     const [groupDescription, setGroupDescription] =

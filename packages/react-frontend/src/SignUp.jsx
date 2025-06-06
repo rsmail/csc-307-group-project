@@ -48,7 +48,7 @@ function SignUp(props) {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem("token", data.token);
-                navigate("/");
+                navigate("/home");
             } else {
                 alert("Invalid email or password");
             }

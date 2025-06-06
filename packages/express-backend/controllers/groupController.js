@@ -22,6 +22,19 @@ export async function getUserGroups(req, res) {
     }
 }
 
+export async function getUserGroupWithTasks(req, res) {
+    try {
+        const token = req.headers.authorization;
+        const user_id = getUserId(token);
+
+        const groups = await groupService.getGroupWithTaskCounts(user_id);
+        return res.status(200).send(groups);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({error: error.message});
+    }
+}
+
 
 /**
  * Creates a new group 
