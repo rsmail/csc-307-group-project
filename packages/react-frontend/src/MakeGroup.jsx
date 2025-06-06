@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./MakeGroup.css"; // Import custom CSS
+import { useNavigate } from "react-router-dom";
 
 const MakeGroup = () => {
     const [groupName, setGroupName] = useState("");
     const [groupDescription, setGroupDescription] =
         useState("");
     
+    const navigate = useNavigate();
     const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
     const handleSubmit = async (e) => {
@@ -57,7 +59,7 @@ const MakeGroup = () => {
 
     return (
         <div className="makegroup-container">
-            <button className="back-button">&larr;</button>
+            <button className="back-button" onClick={() => navigate(-1)}>&larr;</button>
 
             <div className="makegroup-box">
                 <h1 className="makegroup-title">Chore Core</h1>

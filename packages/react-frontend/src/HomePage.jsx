@@ -99,12 +99,12 @@ const Homepage = () => {
             setGroups(data);
           } else {
             const error = await res.json();
-            alert("Error fetching groups: " + JSON.stringify());
+            // alert("Error fetching groups: " + JSON.stringify());
           }
 
         } catch (error) {
           console.log(error);
-          alert("Failed to load groups");
+          // alert("Failed to load groups");
         } 
       }
 
@@ -122,11 +122,11 @@ const Homepage = () => {
             setTasks(data);
           } else {
             const error = await res.json();
-            alert("Error fetching groups: " + JSON.stringify(error));
+            // alert("Error fetching groups: " + JSON.stringify(error));
           }
         } catch (error) {
           console.log(error);
-          alert("Failed to load tasks");
+          // alert("Failed to load tasks");
         }
       }
 
