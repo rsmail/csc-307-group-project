@@ -34,6 +34,7 @@ function App() {
                 if (response.status === 200) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem("token", payload.token);
                         setMessage(
                             `Login successful; auth token saved`
                         );
@@ -64,6 +65,7 @@ function App() {
                 if (response.ok) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem("token", payload.token);
                         setMessage(
                             `Signup successful for user: ${creds.email}; auth token saved`
                         );

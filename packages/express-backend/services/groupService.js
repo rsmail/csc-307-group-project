@@ -8,21 +8,23 @@ import db from "../utils/db.js";
  * @param {*} ownerId 
  * @returns The groupId
  */
-export async function createGroup(groupName, ownerId) {
+export async function createGroup(groupName, ownerId, description = null) {
     // Inserting new group and returning group_id
     const { data, error } = await db
         .from("groups")
-        .insert({
+        .insert([{
             groupName : groupName,
-            groupOwner : ownerId
-        })
-        .select();
+            groupOwner : ownerId,
+            description: description || null
+        }])
+        .select()
+        .single();
     
     if (error) {
         throw new Error(error);
     }
 
-    const group = data[0];
+    const group = data;
     await addOwnerToGroup(group.id, ownerId);
 
     return group.id;
