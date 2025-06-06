@@ -1,5 +1,6 @@
 import "./SignUp.css";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignUp(props) {
     const [creds, setCreds] = useState({
@@ -9,6 +10,8 @@ function SignUp(props) {
         firstname: "",
         lastname: ""
     });
+    const navigate = useNavigate();
+    const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -18,7 +21,7 @@ function SignUp(props) {
         }));
     }
 
-    function submitForm(e) {
+    async function submitForm(e) {
         e.preventDefault();
 
         if (creds.pwd !== creds.confirmpwd) {
@@ -33,17 +36,26 @@ function SignUp(props) {
             lastname: creds.lastname
         };
 
-        props.handleSubmit(payload).then(() => {
-            window.location.href = "/login";
-        });
+        try {
+            const response = await fetch(`${API_PREFIX}/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
 
-        setCreds({
-            email: "",
-            pwd: "",
-            confirmpwd: "",
-            firstname: "",
-            lastname: ""
-        });
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("token", data.token);
+                navigate("/");
+            } else {
+                alert("Invalid email or password");
+            }
+        } catch (error) {
+            console.log(error);
+            alert("Something went wrong.");
+        }
     }
 
     return (

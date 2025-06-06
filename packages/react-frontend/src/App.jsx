@@ -233,7 +233,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/signup"
+                        path="/register"
                         element={
                             <SignUp
                                 handleSubmit={signupUser}

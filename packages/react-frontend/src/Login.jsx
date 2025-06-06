@@ -1,27 +1,37 @@
 import './Login.css';
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
-    const [creds, setCreds] = useState({
-        email: "",
-        password: "",
-        confirmpassword: "",
-        firstname: "",
-        lastname: ""
-    });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setCreds((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-
-  function submitForm(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    props.handleSubmit(creds);
-    setCreds({ email: "", password: "" });
+    try {
+      const response = await fetch(`${API_PREFIX}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({email, password})
+      });
+
+      console.log(JSON.stringify({email, password}));
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        alert("Invalid email or password");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong logging you in.")
+    }
   }
 
   return (
@@ -31,24 +41,23 @@ function Login(props) {
         <h2 className="login-subtitle">Sign in</h2>
         <p className="login-subtext">Enter your email and password to sign in</p>
 
-        <form className="login-form" onSubmit={submitForm}>
+        <form className="login-form" onSubmit={handleLogin}>
           <input
             type="text"
             name="email"
             placeholder="email@domain.com"
-            value={creds.email}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             name="password"
             placeholder="password"
-            value={creds.password}
-
-            onChange={handleChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">Continue</button>
-          <button type="button" onClick={() => window.location.href = "/signup"}>
+          <button type="button" onClick={() => navigate("/register")}>
             Create an account
           </button>
         </form>

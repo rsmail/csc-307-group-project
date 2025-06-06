@@ -4,12 +4,15 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(to bottom, #ffffff, #f0f8ff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .homepage {
   padding: 40px;
   max-width: 1200px;
-  margin: auto;
 }
 
 .homepage-title {

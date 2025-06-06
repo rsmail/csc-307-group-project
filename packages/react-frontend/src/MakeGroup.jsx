@@ -5,6 +5,8 @@ const MakeGroup = () => {
     const [groupName, setGroupName] = useState("");
     const [groupDescription, setGroupDescription] =
         useState("");
+    
+    const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,7 +25,7 @@ const MakeGroup = () => {
 
         try {
             const response = await fetch(
-                "http://localhost:8000/groups",
+                `${API_PREFIX}`,
                 {
                     method: "POST",
                     headers: {
