@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Homepage.css';
+import './HomePage.css';
 
 const groups = [
   { name: 'Group A', completedTasks: 3, totalTasks: 5 },

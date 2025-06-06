@@ -1,7 +1,6 @@
 // controllers/taskController.js
 
 import * as taskService from "../services/taskService.js";
-
 export async function createTask(req, res) {
     try {
         const task = await taskService.createTask(req.body);
@@ -47,6 +46,7 @@ export async function updateTask(req, res) {
     } catch (error) {
         console.error("updateTask error:", error.message);
         res.status(500).json({ error: error.message });
+
     }
 }
 
@@ -60,3 +60,4 @@ export async function deleteTask(req, res) {
         res.status(500).json({ error: error.message });
     }
 }
+

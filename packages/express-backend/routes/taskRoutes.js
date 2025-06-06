@@ -13,3 +13,4 @@ router.patch("/tasks/:id", authenticateToken, taskController.updateTask);
 router.delete("/tasks/:id", authenticateToken, taskController.deleteTask);
 
 export default router;
+

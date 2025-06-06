@@ -44,6 +44,7 @@ function Login(props) {
             name="password"
             placeholder="password"
             value={creds.password}
+
             onChange={handleChange}
           />
           <button type="submit">Continue</button>

@@ -7,7 +7,8 @@
         "dev": "vite",
         "start": "vite",
         "build": "vite build",
-        "lint": "eslint .",
+        "lint": "npx eslint . && npx prettier --check .",
+        "test": "echo \"No tests yet\"",
         "preview": "vite preview"
     },
     "dependencies": {

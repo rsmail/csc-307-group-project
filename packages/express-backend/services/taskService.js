@@ -43,6 +43,7 @@ export async function updateTask(task_id, updates) {
 
     if (error) throw new Error(error.message);
     return data;
+
 }
 
 export async function deleteTask(task_id) {
@@ -52,4 +53,5 @@ export async function deleteTask(task_id) {
         .eq("id", task_id);
 
     if (error) throw new Error(error.message);
+
 }

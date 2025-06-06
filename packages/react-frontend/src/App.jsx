@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
 import Homepage from "./Homepage";
 import AssignTask from "./AssignTask";
+
 import {
     BrowserRouter,
     Routes,
@@ -18,7 +19,7 @@ function App() {
     const INVALID_TOKEN = "INVALID_TOKEN";
     const [token, setToken] = useState(INVALID_TOKEN);
     const [message, setMessage] = useState("");
-    const API_PREFIX = "http://localhost:8000";
+    const API_PREFIX = "https://chorecore-api-f2b2esdrg4g6exfy.westus3-01.azurewebsites.net";
 
     function loginUser(creds) {
         const promise = fetch(`${API_PREFIX}/login`, {
@@ -28,7 +29,7 @@ function App() {
             },
             body: JSON.stringify({
                 email: creds.email,
-                password: creds.password
+                password: creds.pwd
             })
         })
             .then((response) => {
@@ -39,6 +40,7 @@ function App() {
                             "token",
                             payload.token
                         );
+
                         setMessage(
                             `Login successful; auth token saved`
                         );
@@ -222,7 +224,7 @@ function App() {
                             />
                         }
                     />
-                    */
+                */
                     <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
