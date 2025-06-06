@@ -19,7 +19,7 @@ function App() {
     const INVALID_TOKEN = "INVALID_TOKEN";
     const [token, setToken] = useState(INVALID_TOKEN);
     const [message, setMessage] = useState("");
-    const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+    const API_PREFIX = import.meta.env.VITE_API_PREFIX; // API_PREFIX must be defined with VITE_
 
     function loginUser(creds) {
         const promise = fetch(`${API_PREFIX}/login`, {
