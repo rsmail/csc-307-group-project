@@ -21,7 +21,7 @@ export async function createGroup(groupName, ownerId, description = null) {
         .single();
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     const group = data;
@@ -45,7 +45,7 @@ export async function addOwnerToGroup(groupId, ownerId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -64,7 +64,7 @@ export async function inviteUserToGroup(groupId, userId) {
         });
 
         if (error) {
-            throw new Error(error);
+            throw new Error(error.message);
         }
     
     return;
@@ -89,7 +89,7 @@ export async function acceptGroupInvite(groupId, userId) {
         .select();
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     if (!data) {
@@ -116,7 +116,7 @@ export async function declineGroupInvite(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -135,7 +135,7 @@ export async function getUsersPendingInvites(userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
@@ -159,7 +159,7 @@ export async function removeUserFromGroup(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 }
 
@@ -178,7 +178,7 @@ export async function getUserGroups(userId) {
         });
 
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
@@ -195,17 +195,18 @@ export async function getUserGroups(userId) {
 export async function getGroupMembers(groupId) {
     const { data, error } = await db
         .from("group_members")
-        .select("user_id, users(firstname, lastname)")
+        .select("id, user_id, users(firstname, lastname)")
         .match({
             group_id: groupId,
             status: "ACCEPTED"
         });
 
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
     return data.map(item => ({
+        group_member_id: item.id,
         user_id: item.user_id,
         firstname: item.users.firstname,
         lastname: item.users.lastname
@@ -223,9 +224,8 @@ export async function verifyUserInGroup(groupId, userId) {
         });
     
     if (error) {
-        throw new Error(error);
+        throw new Error(error.message);
     }
 
-    return !!data;
+    return !!data.length;
 }
-
