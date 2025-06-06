@@ -89,6 +89,9 @@ const Homepage = () => {
         <>
           <GroupList groups={groupList} onSelectGroup={setSelectedGroupName} />
           <ScrollableList title="Tasks" items={tasks} />
+          <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+            <Link to="/mytasks" className="make-group-button">My Tasks</Link>
+          </div>
           <ProgressList groups={groupList} />
         </>
       ) : (

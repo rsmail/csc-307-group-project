@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GroupPage.css';
 
@@ -55,7 +55,7 @@ const TaskItem = ({ task, groupName }) => {
       }
     } catch (error) {
       alert(`Error updating task: ${error.message}`);
-      setCompleted(!updated); // rollback on failure
+      setCompleted(!updated);
     }
   };
 
@@ -141,6 +141,9 @@ const GroupPage = ({ group, onBack }) => {
       </button>
       <button className="add-member-button" onClick={() => setShowPopup(true)}>
         + Add Group Member
+      </button>
+      <button className="view-members-button" onClick={() => navigate(`/groups/${encodeURIComponent(selectedGroup.name)}/members`)}>
+        View Members
       </button>
 
       {showPopup && (

@@ -6,6 +6,8 @@ import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
 import Homepage from "./HomePage"; 
 import MakeTask from "./MakeTask";
+import GroupMembers from "./GroupMembers";
+import MyTasks from "./MyTasks";
 import {
     BrowserRouter,
     Routes,
@@ -197,23 +199,12 @@ function App() {
                         }
                     />
                     <Route path="/home" element={<Homepage />} />
-                    <Route
-                        path="/login"
-                        element={
-                            <Login handleSubmit={loginUser} />
-                        }
-                    />
-                    <Route
-                        path="/signup"
-                        element={
-                            <SignUp
-                                handleSubmit={signupUser}
-                                buttonLabel="Sign Up"
-                            />
-                        }
-                    />
+                    <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+                    <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
                     <Route path="/makegroup" element={<MakeGroup />} />
                     <Route path="/maketask" element={<MakeTask />} />
+                    <Route path="/groups/:groupName/members" element={<GroupMembers />} />
+                    <Route path="/mytasks" element={<MyTasks />} />
                 </Routes>
             </div>
         </BrowserRouter>
