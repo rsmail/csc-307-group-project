@@ -1,14 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 import './HomePage.css';
-
-const groups = [
-  { name: 'Group A', completedTasks: 3, totalTasks: 5 },
-  { name: 'Group B', completedTasks: 2, totalTasks: 4 },
-  { name: 'Group C', completedTasks: 5, totalTasks: 5 },
-  { name: 'Group D', completedTasks: 1, totalTasks: 3 },
-  { name: 'Group E', completedTasks: 0, totalTasks: 2 }
-];
+import GroupPage from './GroupPage';
 
 const tasks = ['Task 1', 'Task 2', 'Task 3', 'Task 4', 'Task 5'];
 
@@ -38,7 +31,7 @@ const GroupList = ({ groups, onSelectGroup }) => (
       <div className="scroll-gradient right" />
       <div className="scroll-content">
         {groups.map((group, index) => (
-          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group)}>
+          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group.name)}>
             <div>{group.name}</div>
           </div>
         ))}
@@ -78,32 +71,28 @@ const ScrollableList = ({ title, items }) => (
   </div>
 );
 
-const GroupDetails = ({ group, onBack }) => (
-  <div className="group-details">
-    <button className="back-button" onClick={onBack}>← Back to Homepage</button>
-    <h2 className="group-title">{group.name}</h2>
-    <ul className="task-list">
-      {Array.from({ length: group.totalTasks }).map((_, index) => (
-        <li key={index} className="task-item">Task {index + 1}</li>
-      ))}
-    </ul>
-  </div>
-);
+const groupList = [
+  { name: 'Group A', completedTasks: 3, totalTasks: 5 },
+  { name: 'Group B', completedTasks: 2, totalTasks: 4 },
+  { name: 'Group C', completedTasks: 5, totalTasks: 5 },
+  { name: 'Group D', completedTasks: 1, totalTasks: 3 },
+  { name: 'Group E', completedTasks: 0, totalTasks: 2 }
+];
 
 const Homepage = () => {
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroupName, setSelectedGroupName] = useState(null);
 
   return (
     <div className="homepage">
       <h1 className="homepage-title">Chore Core</h1>
-      {!selectedGroup ? (
+      {!selectedGroupName ? (
         <>
-          <GroupList groups={groups} onSelectGroup={setSelectedGroup} />
+          <GroupList groups={groupList} onSelectGroup={setSelectedGroupName} />
           <ScrollableList title="Tasks" items={tasks} />
-          <ProgressList groups={groups} />
+          <ProgressList groups={groupList} />
         </>
       ) : (
-        <GroupDetails group={selectedGroup} onBack={() => setSelectedGroup(null)} />
+        <GroupPage group={selectedGroupName} onBack={() => setSelectedGroupName(null)} />
       )}
     </div>
   );

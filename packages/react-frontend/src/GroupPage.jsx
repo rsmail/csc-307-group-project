@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './GroupPage.css';
 
-const groupData = [
+export const groupData = [
   {
     name: 'Group A',
     tasks: [
@@ -22,6 +22,14 @@ const groupData = [
       { title: 'Mow lawn', assignedTo: 'Eve', dueDate: '2025-05-26' },
       { title: 'Wash car', assignedTo: 'Frank', dueDate: '2025-05-28' }
     ]
+  },
+  {
+    name: 'Group D',
+    tasks: []
+  },
+  {
+    name: 'Group E',
+    tasks: []
   }
 ];
 
@@ -38,45 +46,33 @@ const GroupSection = ({ group }) => (
   <div className="group-section">
     <h2 className="group-title">{group.name}</h2>
     <div className="task-list">
-      {group.tasks.map((task, index) => (
-        <TaskItem key={index} task={task} />
-      ))}
+      {group.tasks.length > 0 ? (
+        group.tasks.map((task, index) => (
+          <TaskItem key={index} task={task} />
+        ))
+      ) : (
+        <p>No tasks assigned.</p>
+      )}
     </div>
   </div>
 );
 
-const GroupList = ({ onSelect }) => (
-  <div className="group-page">
-    <h1 className="page-title">Choose a Group</h1>
-    <div className="group-selection">
-      {groupData.map((group, index) => (
-        <div
-          key={index}
-          className="group-card"
-          onClick={() => onSelect(group)}
-        >
-          {group.name}
-        </div>
-      ))}
-    </div>
-  </div>
-);
+const GroupPage = ({ group, onBack }) => {
+  const selectedGroup = groupData.find(g => g.name === group);
 
-const GroupPage = () => {
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  if (!selectedGroup) {
+    return (
+      <div className="group-page">
+        <button className="back-button" onClick={onBack}>← Back to Homepage</button>
+        <p>Group not found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="group-page">
-      {!selectedGroup ? (
-        <GroupList onSelect={setSelectedGroup} />
-      ) : (
-        <>
-          <button className="back-button" onClick={() => setSelectedGroup(null)}>
-            ← Back to Groups
-          </button>
-          <GroupSection group={selectedGroup} />
-        </>
-      )}
+      <button className="back-button" onClick={onBack}>←</button>
+      <GroupSection group={selectedGroup} />
     </div>
   );
 };
