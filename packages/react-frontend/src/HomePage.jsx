@@ -47,6 +47,27 @@ const GroupList = ({ groups, onSelectGroup }) => (
   </div>
 );
 
+const TaskList = ({ tasks }) => (
+  <div className="list-container">
+    <div className="list-header">
+      <h2 className="list-title">Tasks</h2>
+      <Link to="/AssignTask" className="make-group-button">+ New Task</Link>
+    </div>
+    <div className="scroll-wrapper">
+      <div className="scroll-gradient left" />
+      <div className="scroll-gradient right" />
+      <div className="scroll-content">
+        {tasks.map((task, index) => (
+          <div key={index} className="scroll-item">
+            {task}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+
 const ProgressList = ({ groups }) => (
   <div className="list-container">
     <h2 className="list-title">Progress</h2>
@@ -99,7 +120,7 @@ const Homepage = () => {
       {!selectedGroup ? (
         <>
           <GroupList groups={groups} onSelectGroup={setSelectedGroup} />
-          <ScrollableList title="Tasks" items={tasks} />
+          <TaskList tasks={tasks} />
           <ProgressList groups={groups} />
         </>
       ) : (
