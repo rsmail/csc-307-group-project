@@ -50,11 +50,6 @@ export async function updateTask(req, res) {
     }
 }
 
-/**
- * Deletes a particular task
- * @param {*} req params: {group_id} and {task_id}
- * @param {*} res 
- */
 export async function deleteTask(req, res) {
     try {
         const task_id = req.params.id;
