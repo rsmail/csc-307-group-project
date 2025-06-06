@@ -13,13 +13,14 @@ const router = express();
 const allowedOrigins = ["https://mango-tree-075bf651e.6.azurestaticapps.net"];
 
 router.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  })
-);
-
+    cors({
+      origin: true, // Allow requests from any origin (for debugging, then tighten to frontend URL later)
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+      optionsSuccessStatus: 200 // ← Important for legacy browser preflight compatibility
+    })
+  );
+  
 router.use(express.json());
 
 router.use('/', authRoutes);
