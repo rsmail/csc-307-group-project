@@ -6,8 +6,11 @@
     "scripts": {
         "test": "vitest",
         "coverage": "vitest run --coverage",
+        "lint": "npx eslint . && npx prettier --check .",
+        "test": "echo \"No tests yet\"",
         "dev": "npx nodemon backend.js",
         "start": "node backend.js"
+
     },
     "author": "",
     "license": "ISC",

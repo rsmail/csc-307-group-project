@@ -1,6 +1,6 @@
 // backend.js
 // note: npx nodemon backend.js (node backend.js for default)
-import express  from "express";
+import express from "express";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
@@ -10,13 +10,24 @@ import taskRoutes from "./routes/taskRoutes.js";
 
 const router = express();
 
-router.use(cors());
+const allowedOrigins = ["https://mango-tree-075bf651e.6.azurestaticapps.net"];
+
+router.use(
+    cors({
+      origin: true, // Allow requests from any origin (for debugging, then tighten to frontend URL later)
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+      optionsSuccessStatus: 200 // ← Important for legacy browser preflight compatibility
+    })
+  );
+  
 router.use(express.json());
 
-router.use('/', authRoutes);
-router.use('/', groupRoutes);
-router.use('/', taskRoutes);
+router.use("/", authRoutes);
+router.use("/", groupRoutes);
+
 router.use("/users", userRoutes);
+router.use("/", taskRoutes);
 
 router.get("/", (req, res) => {
     res.send("Hello World!");

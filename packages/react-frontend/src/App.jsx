@@ -4,7 +4,9 @@ import Form from "./Form";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
-import Homepage from "./HomePage"; 
+import Homepage from "./Homepage";
+import AssignTask from "./AssignTask";
+
 import {
     BrowserRouter,
     Routes,
@@ -27,16 +29,22 @@ function App() {
             },
             body: JSON.stringify({
                 email: creds.email,
-                password: creds.password
+                password: creds.pwd
             })
         })
             .then((response) => {
                 if (response.status === 200) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem(
+                            "token",
+                            payload.token
+                        );
+
                         setMessage(
                             `Login successful; auth token saved`
                         );
+                        window.location.href = "/";
                     });
                 } else {
                     setMessage(
@@ -63,6 +71,10 @@ function App() {
                 if (response.ok) {
                     response.json().then((payload) => {
                         setToken(payload.token);
+                        localStorage.setItem(
+                            "token",
+                            payload.token
+                        );
                         setMessage(
                             `Signup successful for user: ${creds.email}; auth token saved`
                         );
@@ -78,6 +90,13 @@ function App() {
             });
 
         return promise;
+    }
+
+    function logoutUser() {
+        localStorage.removeItem("token");
+        setToken(INVALID_TOKEN);
+        setMessage("Logged out successfully");
+        window.location.href = "/";
     }
 
     function updateList(person) {
@@ -133,7 +152,14 @@ function App() {
     }
 
     useEffect(() => {
-        setToken(INVALID_TOKEN);
+        const savedToken = localStorage.getItem("token");
+
+        if (savedToken) {
+            setToken(savedToken);
+        } else {
+            setToken(INVALID_TOKEN);
+        }
+
         fetchUsers()
             .then((res) =>
                 res.status === 200 ? res.json() : undefined
@@ -170,23 +196,36 @@ function App() {
                     <Link to="/">Home</Link> |{" "}
                     <Link to="/login">Login</Link> |{" "}
                     <Link to="/signup">Signup</Link>
+                    {token !== INVALID_TOKEN && (
+                        <>
+                            {" | "}
+                            <Link
+                                to="/"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    logoutUser();
+                                }}>
+                                Logout
+                            </Link>
+                        </>
+                    )}
                 </nav>
                 <p>{message}</p>
-
-                /*<Routes>
+                /*
+                <Routes>
                     <Route
                         path="/table"
                         element={
                             <Table
                                 characters={characters}
-                                removeOneCharacter={removeOneCharacter}
+                                removeOneCharacter={
+                                    removeOneCharacter
+                                }
                             />
                         }
-                    />*/
-                    <Route
-                        path="/"
-                        element={<Homepage />}
                     />
+                */
+                    <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
                         element={
@@ -205,6 +244,10 @@ function App() {
                     <Route
                         path="/makegroup"
                         element={<MakeGroup />}
+                    />
+                    <Route
+                        path="/assigntask"
+                        element={<AssignTask />}
                     />
                 </Routes>
             </div>

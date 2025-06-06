@@ -31,16 +31,15 @@ export async function getUserGroups(req, res) {
  */
 export async function createGroup(req, res) {
     try {
-        const token = req.headers.authorization;
-        const user_id = getUserId(token);
-        const group_name = req.body.group_name;
-        const group_description = req.body.group_description;
+        const userId = getUserId(req.headers.authorization.split(" ")[1]);
+        const { group_name, description } = req.body;
 
-        const group_id = await groupService.createGroup(group_name, group_description, user_id);
-        return res.status(201).send({group_id: group_id});
+        const groupId = await groupService.createGroup(group_name, userId, description);
+        res.status(200).send({ group_id: groupId });
     } catch (error) {
-        console.log(error);
-        return res.status(500).send({error: error.message});
+        console.error("Create group error:", error);
+        res.status(500).send({ error: error.message });
+
     }
 }
 

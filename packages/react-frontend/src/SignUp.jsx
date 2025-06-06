@@ -33,7 +33,9 @@ function SignUp(props) {
             lastname: creds.lastname
         };
 
-        props.handleSubmit(payload);
+        props.handleSubmit(payload).then(() => {
+            window.location.href = "/login";
+        });
 
         setCreds({
             email: "",
@@ -48,9 +50,15 @@ function SignUp(props) {
         <div className="signup-container">
             <div className="signup-box">
                 <h1 className="signup-title">Chore Core</h1>
-                <h2 className="signup-subtitle">Create an account</h2>
-                <form className="signup-form" onSubmit={submitForm}>
-                    <p className="signup-subtext">Enter your information to sign up</p>
+                <h2 className="signup-subtitle">
+                    Create an account
+                </h2>
+                <form
+                    className="signup-form"
+                    onSubmit={submitForm}>
+                    <p className="signup-subtext">
+                        Enter your information to sign up
+                    </p>
 
                     <input
                         type="text"
