@@ -2,39 +2,56 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #ffffff, #f0f8ff);
+  font-family: sans-serif;
+  background: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
 }
 
 .homepage {
   padding: 40px;
   max-width: 1200px;
-  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: black;
 }
 
 .homepage-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #1a237e;
+  color: black;
   text-align: center;
   margin-bottom: 50px;
 }
 
 .list-container {
   margin-bottom: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .list-title {
   font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: black;
+  text-align: center;
 }
 
 .scroll-wrapper {
   position: relative;
   overflow-x: auto;
   padding: 10px 0;
+  width: 100%;
 }
 
 .scroll-wrapper::-webkit-scrollbar {
@@ -48,29 +65,35 @@ body {
 
 .scroll-content {
   display: flex;
+  justify-content: center;
   gap: 24px;
   padding: 20px;
   border-radius: 20px;
-  background-color: #f7f9fc;
-  border: 1px solid #ddd;
+  background-color: white;
+  border: 1px solid #ccc;
 }
 
 .scroll-item {
-  min-width: 160px;
-  padding: 20px;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-  border-radius: 16px;
-  text-align: center;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 50%;
   font-size: 1rem;
-  font-weight: 500;
-  color: #0d47a1;
+  font-weight: 600;
+  color: black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  text-align: center;
+  border: 1px solid #ccc;
 }
 
 .scroll-item:hover {
   transform: scale(1.05);
   cursor: pointer;
+  background: #f0f0f0;
 }
 
 .scroll-gradient {
@@ -84,20 +107,20 @@ body {
 
 .scroll-gradient.left {
   left: 0;
-  background: linear-gradient(to right, #f7f9fc, transparent);
+  background: linear-gradient(to right, white, transparent);
 }
 
 .scroll-gradient.right {
   right: 0;
-  background: linear-gradient(to left, #f7f9fc, transparent);
+  background: linear-gradient(to left, white, transparent);
 }
 
 .vertical-scroll-wrapper {
   max-height: 300px;
   overflow-y: auto;
   padding-right: 10px;
-  border: 1px solid #ddd;
-  background-color: #fefefe;
+  border: 1px solid #ccc;
+  background-color: white;
   border-radius: 10px;
 }
 
@@ -113,12 +136,13 @@ body {
 .progress-item {
   padding: 12px 20px;
   border-bottom: 1px solid #eee;
+  text-align: left;
 }
 
 .progress-group-name {
   font-weight: bold;
   margin-bottom: 8px;
-  color: #333;
+  color: black;
 }
 
 .progress-bar-wrapper {
@@ -139,6 +163,7 @@ body {
   height: 100%;
   border-radius: 5px 0 0 5px;
   transition: width 0.3s ease-in-out;
+  background-color: black;
 }
 
 .progress-label {
@@ -148,18 +173,18 @@ body {
   color: #555;
 }
 
-/* Group Details View */
 .group-details {
-  background: #ffffff;
+  background: white;
   padding: 30px;
   border-radius: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
 .group-title {
   font-size: 2rem;
-  color: #0d47a1;
+  color: black;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -171,22 +196,22 @@ body {
 }
 
 .task-item {
-  background-color: #e3f2fd;
+  background-color: white;
   margin-bottom: 10px;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
-  color: #333;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: black;
+  border: 1px solid #ccc;
+  text-align: center;
 }
 
-/* Back Button */
 .back-button {
-  background-color: #2196f3;
+  background-color: black;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+  padding: 14px;
+  border-radius: 12px;
   margin-bottom: 20px;
   font-size: 1rem;
   cursor: pointer;
@@ -194,26 +219,5 @@ body {
 }
 
 .back-button:hover {
-  background-color: #1976d2;
-}
-
-.scroll-item {
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-  border-radius: 50%; /* Makes the item circular */
-  font-size: 1rem;
-  font-weight: 600;
-  color: #0d47a1;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  text-align: center;
-}
-
-.scroll-item:hover {
-  transform: scale(1.05);
-  cursor: pointer;
+  background-color: #333;
 }

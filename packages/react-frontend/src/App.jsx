@@ -180,7 +180,7 @@ function App() {
                     <Link to="/signup">Signup</Link>
                 </nav>
                 <p>{message}</p>
-                /*
+
                 <Routes>
                     <Route
                         path="/table"
@@ -193,7 +193,6 @@ function App() {
                             />
                         }
                     />
-                */
                     <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
