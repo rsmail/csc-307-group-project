@@ -89,6 +89,13 @@ function App() {
         return promise;
     }
 
+    function logoutUser() {
+        localStorage.removeItem("token");
+        setToken(INVALID_TOKEN);
+        setMessage("Logged out successfully");
+        window.location.href = "/";
+    }
+
     function updateList(person) {
         postUser(person)
             .then((res) => {
@@ -186,6 +193,19 @@ function App() {
                     <Link to="/">Home</Link> |{" "}
                     <Link to="/login">Login</Link> |{" "}
                     <Link to="/signup">Signup</Link>
+                    {token !== INVALID_TOKEN && (
+                        <>
+                            {" | "}
+                            <Link
+                                to="/"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    logoutUser();
+                                }}>
+                                Logout
+                            </Link>
+                        </>
+                    )}
                 </nav>
                 <p>{message}</p>
                 /*
