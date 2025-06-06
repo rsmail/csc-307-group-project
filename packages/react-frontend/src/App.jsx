@@ -19,7 +19,7 @@ function App() {
     const INVALID_TOKEN = "INVALID_TOKEN";
     const [token, setToken] = useState(INVALID_TOKEN);
     const [message, setMessage] = useState("");
-    const API_PREFIX = "https://chorecore-api-f2b2esdrg4g6exfy.westus3-01.azurewebsites.net";
+    const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
     function loginUser(creds) {
         const promise = fetch(`${API_PREFIX}/login`, {
