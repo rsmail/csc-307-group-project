@@ -1,20 +1,22 @@
 // backend.js
 // note: npx nodemon backend.js (node backend.js for default)
-import express  from "express";
+import express from "express";
 import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 const router = express();
 
 router.use(cors());
 router.use(express.json());
 
-router.use('/', authRoutes);
-router.use('/', groupRoutes);
+router.use("/", authRoutes);
+router.use("/", groupRoutes);
 router.use("/users", userRoutes);
+router.use("/", taskRoutes);
 
 router.get("/", (req, res) => {
     res.send("Hello World!");

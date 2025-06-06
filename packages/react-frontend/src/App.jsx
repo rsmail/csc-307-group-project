@@ -5,6 +5,7 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
 import Homepage from "./Homepage";
+import AssignTask from "./AssignTask";
 import {
     BrowserRouter,
     Routes,
@@ -241,6 +242,10 @@ function App() {
                     <Route
                         path="/makegroup"
                         element={<MakeGroup />}
+                    />
+                    <Route
+                        path="/assigntask"
+                        element={<AssignTask />}
                     />
                 </Routes>
             </div>
