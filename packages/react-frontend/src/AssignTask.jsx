@@ -49,7 +49,7 @@ const AssignTask = () => {
                 alert("Error: " + (error?.error || res.status));
             }
         } catch (err) {
-            console.error("Caught error:", err); // 👈 show error
+            console.error("Caught error:", err);
             alert("Unexpected error.");
         }
     };
