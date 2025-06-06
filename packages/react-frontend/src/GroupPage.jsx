@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './GroupPage.css';
 
 export const groupData = [
@@ -59,11 +60,12 @@ const GroupSection = ({ group }) => (
 
 const GroupPage = ({ group, onBack }) => {
   const selectedGroup = groupData.find(g => g.name === group);
+  const navigate = useNavigate();
 
   if (!selectedGroup) {
     return (
       <div className="group-page">
-        <button className="back-button" onClick={onBack}>← Back to Homepage</button>
+        <button className="back-button" onClick={onBack}>←</button>
         <p>Group not found.</p>
       </div>
     );
@@ -73,6 +75,9 @@ const GroupPage = ({ group, onBack }) => {
     <div className="group-page">
       <button className="back-button" onClick={onBack}>←</button>
       <GroupSection group={selectedGroup} />
+      <button className="create-task-button" onClick={() => navigate('/MakeTask')}>
+        + Create New Task
+      </button>
     </div>
   );
 };

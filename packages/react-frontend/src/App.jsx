@@ -5,11 +5,13 @@ import Login from "./Login";
 import SignUp from "./SignUp";
 import MakeGroup from "./MakeGroup";
 import Homepage from "./HomePage"; 
+import MakeTask from "./MakeTask";
 import {
     BrowserRouter,
     Routes,
     Route,
-    Link
+    Link,
+    Navigate
 } from "react-router-dom";
 
 function App() {
@@ -175,13 +177,14 @@ function App() {
         <BrowserRouter>
             <div className="container">
                 <nav>
-                    <Link to="/">Home</Link> |{" "}
+                    <Link to="/home">Home</Link> |{" "}
                     <Link to="/login">Login</Link> |{" "}
                     <Link to="/signup">Signup</Link>
                 </nav>
                 <p>{message}</p>
 
                 <Routes>
+                    <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route
                         path="/table"
                         element={
@@ -193,7 +196,7 @@ function App() {
                             />
                         }
                     />
-                    <Route path="/" element={<Homepage />} />
+                    <Route path="/home" element={<Homepage />} />
                     <Route
                         path="/login"
                         element={
@@ -209,10 +212,8 @@ function App() {
                             />
                         }
                     />
-                    <Route
-                        path="/makegroup"
-                        element={<MakeGroup />}
-                    />
+                    <Route path="/makegroup" element={<MakeGroup />} />
+                    <Route path="/maketask" element={<MakeTask />} />
                 </Routes>
             </div>
         </BrowserRouter>

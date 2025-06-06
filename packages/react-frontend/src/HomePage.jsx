@@ -74,9 +74,9 @@ const ScrollableList = ({ title, items }) => (
 const groupList = [
   { name: 'Group A', completedTasks: 3, totalTasks: 5 },
   { name: 'Group B', completedTasks: 2, totalTasks: 4 },
-  { name: 'Group C', completedTasks: 5, totalTasks: 5 },
-  { name: 'Group D', completedTasks: 1, totalTasks: 3 },
-  { name: 'Group E', completedTasks: 0, totalTasks: 2 }
+  { name: 'Group C', completedTasks: 3, totalTasks: 5 },
+  { name: 'Group D', completedTasks: 3, totalTasks: 3 },
+  { name: 'Group E', completedTasks: 2, totalTasks: 2 }
 ];
 
 const Homepage = () => {
