@@ -5,10 +5,13 @@ const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch('https://chorecore-api-f2b2esdrg4g6exfy.westus3-01.azurewebsites.net/mytasks')
-      .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch tasks'))
-      .then(data => setTasks(data.tasks || []))
-      .catch(err => console.error(err));
+    // For now, fill with fake tasks
+    setTasks([
+      { title: 'Clean kitchen', group: 'Group A', dueDate: '2025-06-10' },
+      { title: 'Do laundry', group: 'Group B', dueDate: '2025-06-11' },
+      { title: 'Take out trash', group: 'Group C', dueDate: '2025-06-12' },
+      { title: 'Vacuum living room', group: 'Group D', dueDate: '2025-06-13' }
+    ]);
   }, []);
 
   return (
