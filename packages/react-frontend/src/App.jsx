@@ -9,6 +9,8 @@ import MakeTask from "./MakeTask";
 import GroupMembers from "./GroupMembers";
 import MyTasks from "./MyTasks";
 import GroupPage from "./GroupPage";
+import { getUserIdFromToken } from "./utils/decodeToken";
+
 
 import {
     BrowserRouter,
@@ -21,9 +23,9 @@ import {
 function App() {
     const [characters, setCharacters] = useState([]);
     const INVALID_TOKEN = "INVALID_TOKEN";
-    const [token, setToken] = useState(INVALID_TOKEN);
+    const [token, setToken] = useState(() => localStorage.getItem("token") || INVALID_TOKEN);
     const [message, setMessage] = useState("");
-    const API_PREFIX = import.meta.env.VITE_API_PRPEFIX;
+    const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
     function loginUser(creds) {
         const promise = fetch(`${API_PREFIX}/login`, {
@@ -36,26 +38,23 @@ function App() {
                 password: creds.pwd
             })
         })
-            .then((response) => {
-                if (response.status === 200) {
-                    response.json().then((payload) => {
-                        setToken(payload.token);
-                        localStorage.setItem("token", payload.token);
-                        setMessage(
-                            `Login successful; auth token saved`
-                        );
-                        window.location.href = "/";
-                    });
-                } else {
-                    setMessage(
-                        `Login Error ${response.status}: ${response.data}`
-                    );
-                }
-            })
-            .catch((error) => {
-                setMessage(`Login Error: ${error}`);
-            });
-
+        .then((response) => {
+            if (response.status === 200) {
+              response.json().then((payload) => {
+                setToken(payload.token);
+                localStorage.setItem("token", payload.token);
+                
+                const userId = getUserIdFromToken(payload.token); // 👈 move here
+                console.log("Logged in as user_id:", userId);
+          
+                setMessage(`Login successful; auth token saved`);
+                window.location.href = "/";
+              });
+            } else {
+              setMessage(`Login Error ${response.status}: ${response.data}`);
+            }
+          })
+          
         return promise;
     }
 
@@ -203,7 +202,7 @@ function App() {
                     <Route path="/home" element={<Homepage />} />
                     <Route path="/login" element={<Login handleSubmit={loginUser} />} />
                     <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
-                    <Route path="/makegroup" element={<MakeGroup />} />
+                    <Route path="/makegroup" element={<MakeGroup token={token} />} />
                     <Route path="/maketask" element={<MakeTask />} />
                     <Route path="/groups/:groupName/members" element={<GroupMembers />} />
                     <Route path="/mytasks" element={<MyTasks />} />

@@ -9,22 +9,31 @@ import db from "../utils/db.js";
  * @returns The groupId
  */
 export async function createGroup(groupName, groupDescription, ownerId) {
-    // Inserting new group and returning group_id
+    console.log("createGroup called with:", { groupName, groupDescription, ownerId });
+
     const { data, error } = await db
         .from("groups")
         .insert({
-            groupName : groupName,
-            description : groupDescription,
-            groupOwner : ownerId
+            groupName: groupName,
+            description: groupDescription,
+            groupOwner: ownerId
         })
         .select();
-    
+
     if (error) {
+        console.error(" Error inserting into groups:", error.message);
         throw new Error(error.message);
     }
 
     const group = data[0];
-    await addOwnerToGroup(group.id, ownerId);
+    console.log("Group created with ID:", group.id);
+
+    try {
+        await addOwnerToGroup(group.id, ownerId);
+    } catch (addErr) {
+        console.error("Failed to add owner to group_members:", addErr.message);
+        throw new Error(addErr.message);
+    }
 
     return group.id;
 }
@@ -45,12 +54,15 @@ export async function getGroupInfo(group_id) {
     }));
 }
 
+
 /**
  * Adds an owner to a group with status ACCEPTED
  * @param {*} groupId 
  * @param {*} ownerId 
  */
 export async function addOwnerToGroup(groupId, ownerId) {
+    console.log("👥 Adding owner to group_members:", { groupId, ownerId });
+
     const { error } = await db
         .from("group_members")
         .insert({
@@ -58,11 +70,15 @@ export async function addOwnerToGroup(groupId, ownerId) {
             group_id: groupId,
             status: "ACCEPTED"
         });
-    
+
     if (error) {
+        console.error(" Error inserting into group_members:", error.message);
         throw new Error(error.message);
     }
+
+    console.log(" Owner added to group_members");
 }
+
 
 /**
  * Adds an entry to group_members and set status to pending

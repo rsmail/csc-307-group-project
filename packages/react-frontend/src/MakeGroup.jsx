@@ -1,17 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MakeGroup.css'; // Import custom CSS
+import { getUserIdFromToken } from "./utils/decodeToken";
+
+
 
 
 const MakeGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
+  const token = localStorage.getItem("token"); // 🔥 pull it here directly
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const userId = getUserIdFromToken(token);
+    console.log("🛠️ MakeGroup user_id:", userId);
+  }, [token]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("using token:", token);
     console.log('Group Name:', groupName);
     console.log('Group Description:', groupDescription);
+  
+    const payload = {
+      group_name: groupName,
+      group_description: groupDescription,
+    };
+  
+    try {
+      const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  
+      const response = await fetch(`${API_PREFIX}/groups`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        alert('Group created, group ID: ' + data.group_id);
+      } else {
+        const error = await response.json();
+        alert('Failed to create group. Please try again.' + error.error);
+      }
+    } catch (err) {
+      console.error('Error creating group:', err);
+      alert('network error');
+    }
   };
-
+  
   return (
     <div className="makegroup-container">
       <button className="back-button">&larr;</button>
