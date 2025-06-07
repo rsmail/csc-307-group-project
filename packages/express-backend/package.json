@@ -8,7 +8,6 @@
         "test": "echo \"No tests yet\"",
         "dev": "npx nodemon backend.js",
         "start": "node backend.js"
-
     },
     "author": "",
     "license": "ISC",
