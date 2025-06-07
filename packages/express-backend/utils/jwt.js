@@ -47,8 +47,27 @@ async function verifyToken(token) {
  * @returns The userId extracted from the token
  */
 function getUserId(token) {
-    const payload = jwt.decode(token);
-    return payload.user_id;
+    if (!token) return null;
+
+    try {
+        const payload = jwt.decode(token);
+        console.log("Decoded JWT payload:", payload); // 👈 add this
+
+        if (!payload || !payload.user_id) {
+            console.error("jwt.decode returned invalid payload:", payload);
+            return null;
+        }
+
+        return payload.user_id;
+    } catch (err) {
+        console.error("Error decoding token:", err.message);
+        return null;
+    }
 }
+
+
+
+
+
 
 export { generateToken, verifyToken, getUserId };

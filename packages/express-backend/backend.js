@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const router = express();
 

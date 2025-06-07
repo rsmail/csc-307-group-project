@@ -12,7 +12,7 @@ import { getUserIdFromEmail } from "../services/userService.js";
  */
 export async function getUserGroups(req, res) {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const user_id = getUserId(token);
 
         const groups = await groupService.getUserGroups(user_id)
@@ -25,7 +25,7 @@ export async function getUserGroups(req, res) {
 
 export async function getUserGroupWithTasks(req, res) {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const user_id = getUserId(token);
 
         const groups = await groupService.getGroupWithTaskCounts(user_id);
@@ -45,19 +45,32 @@ export async function getUserGroupWithTasks(req, res) {
  */
 export async function createGroup(req, res) {
     try {
-        const token = req.headers.authorization;
+        console.log("🛠️ Received createGroup request with headers:", req.headers);
+
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) {
+            return res.status(401).send({ error: "Missing token" });
+        }
+
         const user_id = getUserId(token);
+        if (!user_id) {
+            return res.status(401).send({ error: "Invalid or expired token" });
+        }
+
+        console.log("✅ Decoded user_id:", user_id);
+
         const group_name = req.body.group_name;
         const group_description = req.body.group_description;
 
         const group_id = await groupService.createGroup(group_name, group_description, user_id);
-        return res.status(201).send({group_id: group_id});
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({error: error.message});
+        return res.status(201).send({ group_id: group_id });
+    } catch (error) { 
+        console.log("❌ createGroup() error:", error);
+        return res.status(500).send({ error: error.message });
     }
 }
 
+  
 /**
  * Sends a invite from a group to a user
  * @param {*} req Body: {user_id} // The user_id to send the invite to
@@ -66,7 +79,7 @@ export async function createGroup(req, res) {
 export async function sendGroupInvite(req, res) {
     try {
         // Verify the sender of the request is in the group
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const group_member_id = getUserId(token);
         const group_id = req.params.id;
 
@@ -92,7 +105,7 @@ export async function sendGroupInvite(req, res) {
  */
 export async function acceptGroupInvite(req, res) {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const user_id = getUserId(token);
         const group_id = req.params.id;
 
@@ -112,7 +125,7 @@ export async function acceptGroupInvite(req, res) {
  */
 export async function getGroupMembers(req, res) {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const group_member_id = getUserId(token);
         const group_id = req.params.id;
 
@@ -159,7 +172,7 @@ export async function getGroupInfo(req, res) {
  */
 export async function getPendingInvites(req, res) {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const user_id = getUserId(token);
         
         const groups = await groupService.getUsersPendingInvites(user_id);
@@ -177,7 +190,7 @@ export async function getPendingInvites(req, res) {
  */
 export async function removeGroupMember(req, res) {
      try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
         const user_id = getUserId(token);
         const group_id = req.params.id;
 

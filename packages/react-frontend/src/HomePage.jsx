@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
+import { getUserIdFromToken } from "./utils/decodeToken";
+
 
 import './HomePage.css';
 import GroupPage from './GroupPage';
@@ -88,7 +90,8 @@ const Homepage = () => {
 
   useEffect( () => {
     const token = localStorage.getItem("token");
-
+    const userId = getUserIdFromToken(token);
+    console.log("🏠 HomePage user_id:", userId);
     if (!token) {
       navigate("/login");
     } else {
