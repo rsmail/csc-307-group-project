@@ -129,3 +129,19 @@
 .popup-buttons button:last-of-type {
   background-color: #ccc;
 }
+
+.member-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.member-item {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #f9f9f9;
+  border: 1.5px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 1.1rem;
+}
+

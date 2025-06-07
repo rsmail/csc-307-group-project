@@ -17,7 +17,7 @@ const allowedOrigins = ["https://mango-tree-075bf651e.6.azurestaticapps.net"];
 router.use(
     cors({
       origin: true, // Allow requests from any origin (for debugging, then tighten to frontend URL later)
-      methods: ["GET", "POST", "PUT", "DELETE"],
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
       credentials: true,
       optionsSuccessStatus: 200 // ← Important for legacy browser preflight compatibility
     })

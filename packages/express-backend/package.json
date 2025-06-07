@@ -5,10 +5,10 @@
     "main": "backend.js",
     "scripts": {
         "lint": "npx eslint . && npx prettier --check .",
-        "test": "echo \"No tests yet\"",
+        "test": "vitest",
+        "coverage": "vitest run --coverage",
         "dev": "npx nodemon backend.js",
         "start": "node backend.js"
-
     },
     "author": "",
     "license": "ISC",
@@ -20,6 +20,7 @@
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
+        "vitest": "^3.2.2",
         "whatwg-url": "^14.2.0"
     },
     "devDependencies": {

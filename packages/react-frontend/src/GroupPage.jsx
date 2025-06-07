@@ -2,24 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './GroupPage.css';
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, onTaskUpdate }) => {
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
-  const [completed, setCompleted] = useState(task.status);
+  const [completed, setCompleted] = useState(task.status === "COMPLETED" ? true : false);
 
   const handleCheckboxChange = async () => {
     const updated = !completed; 
-    setCompleted(updated);
-
+    const token = localStorage.getItem("token");
+    
     try {
       const response = await fetch(`${API_PREFIX}/tasks/${task.task_id}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`,
         },
         body: JSON.stringify({ completed: updated })
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        setCompleted(updated);
+        onTaskUpdate(task.task_id);
+
+      } else {
         throw new Error(`Failed to update task status`);
       }
     } catch (error) {
@@ -46,13 +51,13 @@ const TaskItem = ({ task }) => {
   );
 };
 
-const GroupSection = ({ group, tasks }) => (
+const GroupSection = ({ group, tasks, onTaskUpdate }) => (
   <div className="group-section">
     <h2 className="group-title">{group.group_name}</h2>
     <div className="task-list">
       {tasks && tasks.length > 0 ? (
         tasks.map((task) => (
-          <TaskItem key={task.task_id} task={task} />
+          <TaskItem key={task.task_id} task={task} onTaskUpdate={onTaskUpdate} />
         ))
       ) : (
         <p>No tasks assigned to this group.</p>
@@ -74,6 +79,10 @@ const GroupPage = () => {
   const [newMember, setNewMember] = useState("");
 
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+
+  const handleTaskUpdate = (task_id) => {
+    setTasks((prevTasks) => prevTasks.filter(task => task.task_id !== task_id));
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -202,7 +211,7 @@ const GroupPage = () => {
   if (!group_members) {
     return (
       <div className="group-page">
-        <button className="back-button" onClick={() => navigate(-1)}>←</button>
+        <button className="back-button" onClick={() => navigate(-1)}>&larr;</button>
         <p>Group not found.</p>
       </div>
     );
@@ -210,15 +219,17 @@ const GroupPage = () => {
 
   return (
     <div className="group-page">
-      <button className="back-button" onClick={() => navigate(-1)}>←</button>
-      <GroupSection group={group_info} tasks={tasks} />
-      <button className="create-task-button" onClick={() => navigate('/maketask')}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+        <button className="back-button" onClick={() => navigate(-1)}> &larr;</button>
+      </div>
+      {group_info && tasks && <GroupSection group={group_info} tasks={tasks} onTaskUpdate={handleTaskUpdate}/>}
+      <button className="create-task-button" onClick={() => navigate(`/groups/${id}/newTask`)}>
         + Create New Task
       </button>
       <button className="add-member-button" onClick={() => setShowPopup(true)}>
         + Add Group Member
       </button>
-      <button className="view-members-button" onClick={() => navigate(`/groups/${group_members.id}/members`)}>
+      <button className="view-members-button" onClick={() => navigate(`/groups/${id}/members`)}>
         View Members
       </button>
 

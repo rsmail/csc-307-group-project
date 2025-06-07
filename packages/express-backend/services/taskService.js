@@ -16,7 +16,11 @@ export async function getAllUserTasks(user_id, status = null, order = null) {
                 difficulty,
                 status,
                 deadline,
-                group_members:group_member_id!inner(user_id, group_id)
+                group_members:group_member_id!inner(
+                    user_id, 
+                    group_id,
+                    groups(groupName)
+                )
             `)
         .match({
             "group_members.user_id": user_id
@@ -42,7 +46,8 @@ export async function getAllUserTasks(user_id, status = null, order = null) {
         difficulty: task.difficulty,
         status: task.status,
         deadline: task.deadline,
-        group_id: task.group_members.group_id
+        group_id: task.group_members.group_id,
+        group_name: task.group_members.groups.groupName
     }));
 }
 
@@ -104,17 +109,17 @@ export async function getGroupTasks(group_id, status = null, order = null) {
  * @returns The payload on success
  */
 export async function createNewTask(payload) {
-    const group_member_id = payload.group_member_id;
-    const name = payload.name;
-    const difficulty = payload.difficulty;
-    const deadline = payload.deadline
+    const group_member_id = payload.assignedTo;
+    const name = payload.title;
+    // const difficulty = payload.difficulty;
+    const deadline = payload.dueDate;
 
     const { data, error } = await db
         .from("tasks")
         .insert({
             "group_member_id" : group_member_id,
             "name" : name,
-            "difficulty": difficulty,
+            "difficulty": 2,
             "deadline": deadline,
             "status": "IN_PROGRESS"
         })

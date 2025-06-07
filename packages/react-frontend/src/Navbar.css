@@ -1,0 +1,83 @@
+/* General Navbar Container */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem; /* Add some padding on the sides */
+  background-color: #fff; /* White background */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  height: 60px; /* Give it a defined height */
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.navabar-links {
+  display: flex;
+  align-items: center;
+}
+
+.logout-button {
+  margin-left: auto;
+  background-color: #e6e6e6;
+  color: #333
+}
+
+.logout-button:hover {
+  background-color: #d4d4d4;
+  color: 000;
+}
+/* Styling for the standard links (Home, Login) */
+.navbar a,
+.navbar button {
+  /* Default State Styling */
+  background-color: transparent; /* Makes the background clear */
+  color: #555;                  /* Sets a consistent text color */
+  border: none;                  /* Removes border from the button */
+  
+  /* Consistent Shape & Spacing */
+  padding: 0.6rem 1rem;
+  margin-left: 0.5rem;
+  border-radius: 8px; /* Rounded corners for the hover box */
+  
+  /* Consistent Text & Font */
+  text-decoration: none;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+
+  /* Smooth transition for the hover effect */
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  background-color: #007bff; /* The blue highlight */
+  color: #ffffff;             /* White text on hover */
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar a,
+  .navbar button {
+    /* On very small screens, reduce the button padding and font size */
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
+    margin-left: 0.25rem;
+  }
+}
