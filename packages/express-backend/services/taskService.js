@@ -61,7 +61,13 @@ export async function getGroupTasks(group_id, status = null, order = null) {
             difficulty,
             status,
             deadline,
-            group_members:group_member_id!inner(user_id)
+            group_members:group_member_id!inner(
+                users:user_id (
+                    id,
+                    firstname,
+                    lastname
+                )
+            )
         `)
         .match({
             "group_members.group_id": group_id
@@ -79,13 +85,15 @@ export async function getGroupTasks(group_id, status = null, order = null) {
     if (error) {
         throw new Error(error.message);
     }
+    
     return data.map(task => ({
         task_id : task.id,
-        name: task.name,
+        task_name: task.name,
         difficulty: task.difficulty,
         status: task.status,
         deadline: task.deadline,
-        assigned_to: task.group_members.group_id
+        assigned_to: task.group_members.users.id,
+        user_name: `${task.group_members.users.firstname} ${task.group_members.users.lastname}`
     }));
 }
 
@@ -120,7 +128,7 @@ export async function createNewTask(payload) {
 }
 
 /**
- * Updates a task's status to APPROVAL_NEEDED
+ * Updates a task's status to COMPLETED
  * @param {*} task_id 
  */
 export async function markTaskComplete(task_id) {

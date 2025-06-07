@@ -8,6 +8,8 @@ import Homepage from "./HomePage";
 import MakeTask from "./MakeTask";
 import GroupMembers from "./GroupMembers";
 import MyTasks from "./MyTasks";
+import GroupPage from "./GroupPage";
+
 import {
     BrowserRouter,
     Routes,
@@ -205,6 +207,7 @@ function App() {
                     <Route path="/maketask" element={<MakeTask />} />
                     <Route path="/groups/:groupName/members" element={<GroupMembers />} />
                     <Route path="/mytasks" element={<MyTasks />} />
+                    <Route path="/groups/:id" element={<GroupPage />} />
                 </Routes>
             </div>
         </BrowserRouter>
