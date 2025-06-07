@@ -15,8 +15,8 @@ const MyTasks = () => {
   }, []);
 
   return (
-    <div className="homepage">
-      <h1 className="homepage-title">My Tasks</h1>
+    <div className="MyTask">
+      <h1 className="MyTask-title">My Tasks</h1>
       <div className="list-container">
         {tasks.length > 0 ? (
           <ul className="task-list">
