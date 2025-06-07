@@ -29,6 +29,22 @@ export async function createGroup(groupName, groupDescription, ownerId) {
     return group.id;
 }
 
+export async function getGroupInfo(group_id) {
+    const { data, error } = await db
+        .from("groups")
+        .select("groupName, description")
+        .eq("id", group_id);
+    
+    if (error) {
+        throw new Error(error.message);
+    }
+    
+    return data.map((item) => ({
+        group_name: item.groupName,
+        description: item.description
+    }));
+}
+
 /**
  * Adds an owner to a group with status ACCEPTED
  * @param {*} groupId 
@@ -59,7 +75,7 @@ export async function inviteUserToGroup(groupId, userId) {
         .insert({
             user_id: userId,
             group_id : groupId,
-            status : "PENDING"
+            status : "ACCEPTED"
         });
 
         if (error) {
@@ -197,17 +213,17 @@ export async function getGroupWithTaskCounts(userId) {
 }
 
 /**
- * Fetches all users in a group
+ * Fetches all group info including members
  * @param {*} groupId 
- * @returns A list of group members
+ * @returns Group_id, group_name, and group_members
  */
 export async function getGroupMembers(groupId) {
     const { data, error } = await db
         .from("group_members")
         .select("id, user_id, users(firstname, lastname)")
         .match({
-            group_id: groupId,
-            status: "ACCEPTED"
+            "group_id": groupId,
+            "status": "ACCEPTED"
         });
 
     if (error) {

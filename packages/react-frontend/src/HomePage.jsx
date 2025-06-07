@@ -19,7 +19,15 @@ const ProgressBar = ({ completed, total }) => {
   );
 };
 
-const GroupList = ({ groups, onSelectGroup }) => (
+const GroupList = ({ groups }) => {
+  const navigate = useNavigate();
+
+  const handleGroupClick = (groupId) => {
+    navigate(`/groups/${groupId}`);
+  };
+
+
+  return (
   <div className="list-container">
     <div className="list-header">
       <h2 className="list-title">Groups</h2>
@@ -29,15 +37,16 @@ const GroupList = ({ groups, onSelectGroup }) => (
       <div className="scroll-gradient left" />
       <div className="scroll-gradient right" />
       <div className="scroll-content">
-        {groups.map((group, index) => (
-          <div key={index} className="scroll-item clickable" onClick={() => onSelectGroup(group.group_name)}>
+        {groups.map((group) => (
+          <div key={group.group_id} className="scroll-item clickable" onClick={() => handleGroupClick(group.group_id)}>
             <div>{group.group_name}</div>
           </div>
         ))}
       </div>
     </div>
   </div>
-);
+  );
+};
 
 const ProgressList = ({ groups }) => (
   <div className="list-container">
@@ -73,9 +82,9 @@ const ScrollableList = ({ title, items }) => (
 const Homepage = () => {
   const [selectedGroupName, setSelectedGroupName] = useState(null);
   const [groups, setGroups] = useState([]);
+  const [pending_invite, setInvite] = useState([]);
   const [tasks, setTasks] = useState([]);
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
-  const navigate = useNavigate();
 
   useEffect( () => {
     const token = localStorage.getItem("token");
@@ -115,7 +124,6 @@ const Homepage = () => {
 
           if (result.ok) {
             const data = await result.json();
-            console.log(data);
             setTasks(data);
           } else {
             const error = await result.json();
@@ -136,7 +144,7 @@ const Homepage = () => {
       <h1 className="homepage-title">Chore Core</h1>
       {!selectedGroupName ? (
         <>
-          <GroupList groups={groups} onSelectGroup={setSelectedGroupName} />
+          <GroupList groups={groups} />
           <ScrollableList title="Tasks" items={tasks} />
           <div style={{ textAlign: 'right', marginBottom: '10px' }}>
             <Link to="/mytasks" className="make-group-button">My Tasks</Link>
