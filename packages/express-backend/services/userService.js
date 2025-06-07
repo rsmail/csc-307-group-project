@@ -20,3 +20,22 @@ async function getUserProfile(user_id) {
 
     return data[0];
 }
+
+/**
+ * Get's a user's id from their email
+ * @param {*} email 
+ * @returns A user's user_id
+ */
+export async function getUserIdFromEmail(email) {
+    const { data, error } = await db
+        .from("users")
+        .select("id")
+        .eq("email", email)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data ? data.id : null;
+}

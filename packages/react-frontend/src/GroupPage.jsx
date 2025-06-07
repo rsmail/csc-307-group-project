@@ -1,48 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './GroupPage.css';
 
-export const groupData = [
-  {
-    name: 'Group A',
-    tasks: [
-      { title: 'Clean kitchen', assignedTo: 'Alice', dueDate: '2025-05-28', completed: false },
-      { title: 'Vacuum living room', assignedTo: 'Bob', dueDate: '2025-05-29', completed: false }
-    ]
-  },
-  {
-    name: 'Group B',
-    tasks: [
-      { title: 'Laundry', assignedTo: 'Carol', dueDate: '2025-05-27', completed: false },
-      { title: 'Grocery shopping', assignedTo: 'Dave', dueDate: '2025-05-30', completed: false }
-    ]
-  },
-  {
-    name: 'Group C',
-    tasks: [
-      { title: 'Mow lawn', assignedTo: 'Eve', dueDate: '2025-05-26', completed: false },
-      { title: 'Wash car', assignedTo: 'Frank', dueDate: '2025-05-28', completed: false }
-    ]
-  },
-  {
-    name: 'Group D',
-    tasks: []
-  },
-  {
-    name: 'Group E',
-    tasks: []
-  }
-];
-
-const TaskItem = ({ task, groupName }) => {
-  const [completed, setCompleted] = useState(task.completed);
+const TaskItem = ({ task }) => {
+  const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  const [completed, setCompleted] = useState(task.status);
 
   const handleCheckboxChange = async () => {
-    const updated = !completed;
+    const updated = !completed; 
     setCompleted(updated);
 
     try {
-      const response = await fetch(`https://chorecore-api-f2b2esdrg4g6exfy.westus3-01.azurewebsites.net/groups/${groupName}/tasks/${task.title}`, {
+      const response = await fetch(`${API_PREFIX}/tasks/${task.task_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -55,7 +24,7 @@ const TaskItem = ({ task, groupName }) => {
       }
     } catch (error) {
       alert(`Error updating task: ${error.message}`);
-      setCompleted(!updated);
+      setCompleted(!updated); // Revert on failure
     }
   };
 
@@ -68,65 +37,172 @@ const TaskItem = ({ task, groupName }) => {
           onChange={handleCheckboxChange}
           style={{ marginRight: '10px' }}
         />
-        {task.title}
+        {task.task_name}
       </div>
       <div className="task-meta">
-        Assigned to: <strong>{task.assignedTo}</strong> | Due: <strong>{task.dueDate}</strong>
+        Assigned to: <strong>{task.user_name}</strong> | Due: <strong>{task.deadline}</strong>
       </div>
     </div>
   );
 };
 
-const GroupSection = ({ group }) => (
+const GroupSection = ({ group, tasks }) => (
   <div className="group-section">
-    <h2 className="group-title">{group.name}</h2>
+    <h2 className="group-title">{group.group_name}</h2>
     <div className="task-list">
-      {group.tasks.length > 0 ? (
-        group.tasks.map((task, index) => (
-          <TaskItem key={index} task={task} groupName={group.name} />
+      {tasks && tasks.length > 0 ? (
+        tasks.map((task) => (
+          <TaskItem key={task.task_id} task={task} />
         ))
       ) : (
-        <p>No tasks assigned.</p>
+        <p>No tasks assigned to this group.</p>
       )}
     </div>
   </div>
 );
 
-const GroupPage = ({ group, onBack }) => {
-  const selectedGroup = groupData.find(g => g.name === group);
+const GroupPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [group_members, setGroup] = useState(null);
+  const [group_info, setGroupInfo] = useState(null);
+  const [tasks, setTasks] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
   const [showPopup, setShowPopup] = useState(false);
   const [newMember, setNewMember] = useState("");
 
+  const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const fetchGroupData = async () => {
+      try {
+        setLoading(true); // Reset loading state on new fetch
+        const result = await fetch(`${API_PREFIX}/groups/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+        });
+
+        if (result.ok) {
+          const data = await result.json();
+          setGroup(data);
+        } else {
+          const errorData = await result.json();
+          setError(errorData.message || 'Failed to fetch group data.');
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchGroupTasks = async () => {
+      try {
+        setLoading(true);
+        const result = await fetch(`${API_PREFIX}/groups/${id}/tasks?status=IN_PROGRESS`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+        });
+
+        if (result.ok) {
+          const data = await result.json();
+          setTasks(data);
+        } else {
+          const error = await result.json();
+          setError(error.message || "Failed to fetch group data");
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const fetchGroupInfo = async () => {
+      try {
+        setLoading(true);
+        const result = await fetch(`${API_PREFIX}/groups/${id}/info`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+        });
+
+        if (result.ok) {
+          const data = await result.json();
+          setGroupInfo(data[0]);
+        } else {
+          const error = await result.json();
+          setError(error);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchGroupData();
+    fetchGroupTasks();
+    fetchGroupInfo();
+  }, [id, navigate, API_PREFIX]);
+
   const handleAddMember = async () => {
-    if (!newMember.trim()) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    if (!newMember.trim() || !group_members) return;
 
     try {
-      const response = await fetch(`https://chorecore-api-f2b2esdrg4g6exfy.westus3-01.azurewebsites.net/groups/${selectedGroup.name}/members`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: newMember })
-      });
+        const response = await fetch(`${API_PREFIX}/groups/${id}/`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `${token}`
+            },
+            body: JSON.stringify({ email: newMember })
+        });
 
-      if (response.ok) {
-        alert(`Added ${newMember} to ${selectedGroup.name}`);
-        setNewMember("");
-        setShowPopup(false);
-      } else {
-        const errorText = await response.text();
-        alert(`Failed to add member: ${errorText}`);
-      }
-    } catch (error) {
-      alert(`Error adding member: ${error.message}`);
+        if (response.ok) {
+            alert(`Invited ${newMember} to ${group_info.group_name}`);
+            setNewMember("");
+            setShowPopup(false);
+        } else {
+            const errorText = await response.text();
+            alert(`Failed to add member: ${errorText}`);
+        }
+    } catch (err) {
+        alert(`Error adding member: ${err.message}`);
     }
   };
 
-  if (!selectedGroup) {
+  if (loading) {
+    return <div className="group-page"><p>Loading group...</p></div>;
+  }
+  
+  if (error) {
+    return <div className="group-page"><p>Error: {error}</p></div>;
+  }
+  
+  if (!group_members) {
     return (
       <div className="group-page">
-        <button className="back-button" onClick={onBack}>←</button>
+        <button className="back-button" onClick={() => navigate(-1)}>←</button>
         <p>Group not found.</p>
       </div>
     );
@@ -134,30 +210,30 @@ const GroupPage = ({ group, onBack }) => {
 
   return (
     <div className="group-page">
-      <button className="back-button" onClick={onBack}>←</button>
-      <GroupSection group={selectedGroup} />
+      <button className="back-button" onClick={() => navigate(-1)}>←</button>
+      <GroupSection group={group_info} tasks={tasks} />
       <button className="create-task-button" onClick={() => navigate('/maketask')}>
         + Create New Task
       </button>
       <button className="add-member-button" onClick={() => setShowPopup(true)}>
         + Add Group Member
       </button>
-      <button className="view-members-button" onClick={() => navigate(`/groups/${encodeURIComponent(selectedGroup.name)}/members`)}>
+      <button className="view-members-button" onClick={() => navigate(`/groups/${group_members.id}/members`)}>
         View Members
       </button>
 
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h3>Add New Member</h3>
+            <h3>Invite New Member</h3>
             <input
               type="text"
               value={newMember}
               onChange={(e) => setNewMember(e.target.value)}
-              placeholder="Enter member name"
+              placeholder="Enter user email"
             />
             <div className="popup-buttons">
-              <button onClick={handleAddMember}>Add</button>
+              <button onClick={handleAddMember}>Invite</button>
               <button onClick={() => setShowPopup(false)}>Cancel</button>
             </div>
           </div>

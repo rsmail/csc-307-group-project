@@ -2,6 +2,7 @@
 
 import * as groupService from "../services/groupService.js";
 import { getUserId } from "../utils/jwt.js"
+import { getUserIdFromEmail } from "../services/userService.js";
 
 /**
  * Fetches the user's groups
@@ -73,7 +74,8 @@ export async function sendGroupInvite(req, res) {
             return res.status(401).send("User not in group");
         }
 
-        const user_id = req.body.user_id;
+        const email = req.body.email;
+        const user_id = await getUserIdFromEmail(email);
         
         await groupService.inviteUserToGroup(group_id, user_id);
         return res.status(201).send("User successfully invited");
@@ -120,6 +122,29 @@ export async function getGroupMembers(req, res) {
 
         const members = await groupService.getGroupMembers(group_id);
         return res.status(200).send(members);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({error: error.message});
+    }
+}
+
+/**
+ * Fetches a group's name and description
+ * @param {*} req 
+ * @param {*} res 
+ */
+export async function getGroupInfo(req, res) {
+    try {
+        const token = req.headers.authorization;
+        const user_id = getUserId(token);
+        const group_id = req.params.id;
+
+        if (!(await groupService.verifyUserInGroup(group_id, user_id))) {
+            return res.status(401).send("User not in group");
+        }
+
+        const group_info = await groupService.getGroupInfo(group_id);
+        return res.status(200).send(group_info);
     } catch (error) {
         console.log(error);
         res.status(500).send({error: error.message});
