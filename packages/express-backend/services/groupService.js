@@ -221,6 +221,7 @@ export async function getUserGroups(userId) {
 export async function getGroupWithTaskCounts(userId) {
     const { data, error } = await db.rpc("get_groups_with_task_counts", {p_user_id : userId});
 
+
     if (error) {
         throw new Error(error.message);
     }

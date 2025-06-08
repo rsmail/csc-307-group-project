@@ -51,7 +51,6 @@ function getUserId(token) {
 
     try {
         const payload = jwt.decode(token);
-        console.log("Decoded JWT payload:", payload); // 👈 add this
 
         if (!payload || !payload.user_id) {
             console.error("jwt.decode returned invalid payload:", payload);

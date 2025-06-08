@@ -225,3 +225,24 @@ body {
 .back-button:hover {
   background-color: #333;
 }
+
+.make-group-button {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 8px;
+
+  background-color: transparent;
+  color: #007bff;
+  border: 2px solid #007bff;
+
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+/* On hover, the button fills in */
+.make-group-button:hover {
+  background-color: #007bff;
+  color: #ffffff; /* Text becomes white */
+}

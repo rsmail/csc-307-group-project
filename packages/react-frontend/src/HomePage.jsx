@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
-import { getUserIdFromToken } from "./utils/decodeToken";
-
 
 import './HomePage.css';
 import GroupPage from './GroupPage';
 
 const ProgressBar = ({ completed, total }) => {
-  const percent = Math.round((completed / total) * 100);
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
   return (
     <div className="progress-bar-wrapper">
       <div className="progress-bar-background">
@@ -87,11 +85,12 @@ const Homepage = () => {
   const [pending_invite, setInvite] = useState([]);
   const [tasks, setTasks] = useState([]);
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  const navigate = useNavigate();
 
   useEffect( () => {
     const token = localStorage.getItem("token");
-    const userId = getUserIdFromToken(token);
-    console.log("🏠 HomePage user_id:", userId);
+    // const userId = getUserIdFromToken(token);
+    // console.log("🏠 HomePage user_id:", userId);
     if (!token) {
       navigate("/login");
     } else {

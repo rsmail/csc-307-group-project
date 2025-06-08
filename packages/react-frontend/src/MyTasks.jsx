@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './MyTasks.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      window.location.href = "/login";
+      navigate("/login");
     } else {
       const fetchTasks = async () => {
         try {
@@ -22,9 +24,12 @@ const MyTasks = () => {
 
           if (result.ok) {
             const data = await result.json();
+            console.log(data);
+
             const withCompletion = data
               .map(task => ({ ...task, completed: task.status === 'COMPLETED' }))
               .filter(task => !task.completed);
+
             setTasks(withCompletion);
           } else {
             const error = await result.json();
@@ -39,16 +44,12 @@ const MyTasks = () => {
     }
   }, []);
 
-  const toggleCompletion = async (index) => {
-    const updatedTasks = [...tasks];
-    const task = updatedTasks[index];
-    task.completed = !task.completed;
-    setTasks(updatedTasks.filter(t => !t.completed));
-
+  const toggleCompletion = async (task_id) => {
     const token = localStorage.getItem("token");
 
     try {
-      const result = await fetch(`${API_PREFIX}/tasks/${task.id}`, {
+      console.log(task_id);
+      const result = await fetch(`${API_PREFIX}/tasks/${task_id}`, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -60,6 +61,9 @@ const MyTasks = () => {
       if (!result.ok) {
         const error = await result.json();
         console.log('Failed to update task status:', error);
+      } else {
+        // Remove the task
+        setTasks((prevTasks) => prevTasks.filter(t => t.task_id !== task_id));
       }
     } catch (error) {
       console.log('Error updating task:', error);
@@ -68,22 +72,25 @@ const MyTasks = () => {
 
   return (
     <div className="MyTask">
+      <button className="back-button" onClick={() => navigate(-1)}>&larr;</button>
       <h1 className="MyTask-title">My Tasks</h1>
       <div className="list-container">
         {tasks.length > 0 ? (
           <ul className="task-list">
-            {tasks.map((task, index) => (
-              <li key={index} className={`task-item ${task.completed ? 'completed' : ''}`}>
-                <label className="task-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={() => toggleCompletion(index)}
-                  />
+            {tasks.map((task) => (
+              <li key={task.task_id} className={`task-item ${task.status ? 'completed' : ''}`}>
+                <div className="task-header">
+                  <label className="task-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={task.status === "COMPLETED"}
+                      onChange={() => toggleCompletion(task.task_id)}
+                    />
+                  </label>
                   <span className="checkbox-label">{task.name}</span>
-                </label>
+                </div>
                 <div className="task-meta">
-                  Group: <strong>{task.groupName}</strong> | Due: <strong>{task.deadline}</strong>
+                  Group: <strong>{task.group_name}</strong> | Due: <strong>{task.deadline}</strong>
                 </div>
               </li>
             ))}

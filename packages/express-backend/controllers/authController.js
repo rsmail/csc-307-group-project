@@ -1,6 +1,6 @@
 // controllers/authController.js
 
-import authService from "../services/authService.js";
+import * as authService from "../services/authService.js";
 
 export async function login(req, res) {
     try {

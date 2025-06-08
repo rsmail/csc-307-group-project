@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './MakeGroup.css'; // Import custom CSS
-import { getUserIdFromToken } from "./utils/decodeToken";
+// import { getUserIdFromToken } from "./utils/decodeToken";
 
 
 
@@ -9,11 +10,12 @@ const MakeGroup = () => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
   const token = localStorage.getItem("token"); // 🔥 pull it here directly
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const userId = getUserIdFromToken(token);
-    console.log("🛠️ MakeGroup user_id:", userId);
-  }, [token]);
+  // useEffect(() => {
+  //   // const userId = getUserIdFromToken(token);
+  //   // console.log("🛠️ MakeGroup user_id:", userId);
+  // }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ const MakeGroup = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -53,7 +55,9 @@ const MakeGroup = () => {
   
   return (
     <div className="makegroup-container">
-      <button className="back-button">&larr;</button>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+        <button className="back-button" onClick={() => navigate(-1)}> &larr;</button>
+      </div>
 
       <div className="makegroup-box">
         <h1 className="makegroup-title">Chore Core</h1>
