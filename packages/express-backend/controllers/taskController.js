@@ -90,8 +90,6 @@ export async function markTaskComplete(req, res) {
         const user_id = getUserId(token);
         const task_id = req.params.id;
 
-        console.log(user_id);
-
         if(!(await taskService.verifyTaskAssignedToUser(task_id, user_id))) {
             return res.status(401).send("Task does not belong to user");
         }

@@ -70,6 +70,7 @@ test("Testing removing a user from a group", async () => {
 
 test("Testing inviting an existing user again", async () => {
     const user_id = getUserId(token2);
+    await expect(groupService.removeUserFromGroup(group_id, user_id)).resolves.not.toThrow();
     await expect(groupService.inviteUserToGroup(group_id, user_id)).resolves.not.toThrow();
 })
 
